@@ -1,0 +1,434 @@
+/* ============================================================================
+   SIXT P100 — Colors, Type, Spacing & Radii
+   Source: P100 design tokens + typography utilities from the SIXT prototype.
+   Usage:  <link rel="stylesheet" href="colors_and_type.css">
+   Theme:  <html data-p100-theme="prime-light | prime-dark | option-light |
+                                 option-dark | accent-light | accent-dark">
+           prime-light is the default (no attribute).
+   ========================================================================== */
+
+/* -------- Font faces -------------------------------------------------------- */
+@font-face {
+  font-family: "Helvetica Now Display";
+  font-weight: 900;
+  font-style: normal;
+  font-stretch: condensed;
+  font-display: swap;
+  src: url("fonts/display-condensed-black.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Helvetica Now Text";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/text-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Helvetica Now Text";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/text-bold.woff2") format("woff2");
+}
+
+/* -------- Tokens (prime-light default) ------------------------------------- */
+:root {
+  /* Content */
+  --color-content-primary: #1A1A1A;
+  --color-content-secondary: #656A6F;
+  --color-content-tertiary: #D7DADC;
+  --color-on-content-on-primary: #FFFFFF;
+  --color-on-content-on-secondary: #FFFFFF;
+  --color-on-content-on-tertiary: #FFFFFF;
+
+  /* Extended content (brand + signal colors) */
+  --color-content-extended-soft-brand: #FFF2E8;
+  --color-content-extended-brand: #FF5000;
+  --color-content-extended-strong-brand: #993000;
+  --color-content-extended-soft-info: #EAFBFF;
+  --color-content-extended-info: #0088FF;
+  --color-content-extended-strong-info: #1658C7;
+  --color-content-extended-soft-accent: #FCF6FF;
+  --color-content-extended-accent: #6B5DFF;
+  --color-content-extended-strong-accent: #473CBA;
+  --color-content-extended-soft-success: #EAFFEC;
+  --color-content-extended-success: #22C55E;
+  --color-content-extended-strong-success: #17783C;
+  --color-content-extended-soft-warning: #FFFEE0;
+  --color-content-extended-warning: #FFBC1F;
+  --color-content-extended-strong-warning: #99690B;
+  --color-content-extended-soft-error: #FFF5F6;
+  --color-content-extended-error: #D70015;
+  --color-content-extended-strong-error: #9F000C;
+  --color-on-content-extended-on-brand: #FFFFFF;
+  --color-on-content-extended-on-info: #FFFFFF;
+  --color-on-content-extended-on-accent: #FFFFFF;
+  --color-on-content-extended-on-success: #FFFFFF;
+  --color-on-content-extended-on-warning: #FFFFFF;
+  --color-on-content-extended-on-error: #FFFFFF;
+
+  /* Surfaces */
+  --color-surface-canvas: #FFFFFF;
+  --color-surface-secondary-canvas: #E9EBEE;
+  --color-surface-container: #FFFFFF;
+  --color-surface-secondary-container: #F4F5F6;
+
+  /* Glass */
+  --color-glass-clear: #FFFFFF03;
+  --color-glass-ultra-thin: #FFFFFF21;
+  --color-glass-thin: #FFFFFF57;
+  --color-glass-regular: #FFFFFF8C;
+  --color-glass-thick: #FFFFFFC7;
+
+  /* Overlays */
+  --color-overlay-hover: #0000000D;
+  --color-overlay-pressed: #00000014;
+  --color-overlay-disabled: #FFFFFF57;
+  --color-overlay-focus: #FF5000;
+  --color-overlay-shimmer: #E9EBEE;
+  --color-overlay-secondary-shimmer: #D7DADC;
+  --color-overlay-dimming: #00000036;
+
+  /* Headline pastels (editorial callouts) */
+  --color-headline-lilac: #F6E3FF;
+  --color-headline-blue: #BFF2FF;
+  --color-headline-green: #ABFFB2;
+  --color-headline-yellow: #FFFBAB;
+
+  /* Loyalty tiers */
+  --color-loyalty-silver: #D9D9D9;
+  --color-loyalty-gold: #C88C18;
+  --color-loyalty-platinum: #9288C9;
+  --color-loyalty-diamond: #559EC8;
+
+  /* Brand globals */
+  --color-global-black: #000000;
+  --color-global-white: #FFFFFF;
+  --color-global-sixt-anthracite: #1A1A1A;
+  --color-global-sixt-orange: #FF5000;
+
+  /* Type sizes (responsive via media queries below) */
+  --typography-font-size-large-display: 60px;
+  --typography-font-size-medium-display: 48px;
+  --typography-font-size-small-display: 40px;
+  --typography-font-size-large-title: 34px;
+  --typography-font-size-medium-title: 28px;
+  --typography-font-size-small-title: 20px;
+  --typography-font-size-x-large-copy: 22px;
+  --typography-font-size-large-copy: 16px;
+  --typography-font-size-medium-copy: 14px;
+  --typography-font-size-small-copy: 12px;
+  --typography-letter-spacing-display: 1.5px;
+  --typography-letter-spacing-large-title: 1px;
+  --typography-letter-spacing-small-title: 0.25px;
+  --typography-letter-spacing-copy: 0.12px;
+
+  /* Spacing */
+  --spacing-5xs: 2px;
+  --spacing-4xs: 4px;
+  --spacing-3xs: 8px;
+  --spacing-2xs: 12px;
+  --spacing-xs: 16px;
+  --spacing-sm: 20px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 40px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 80px;
+  --spacing-5xl: 96px;
+  --spacing-6xl: 160px;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 160px;
+
+  /* Stroke */
+  --stroke-sm: 1px;
+  --stroke-md: 2px;
+  --stroke-lg: 3px;
+  --stroke-xl: 4px;
+
+  /* Glass blur */
+  --blur-glass: 30px;
+
+  /* Elevation */
+  --elevation-small: 0px 2px 6px 0px #0000001A, 0px 1px 4px 0px #00000014;
+  --elevation-medium: 0px 4px 14px 0px #0000001A, 0px 2px 10px 0px #00000014;
+  --elevation-large: 0px 12px 40px 0px #0000001A, 0px 8px 32px 0px #00000014;
+}
+
+/* -------- Theme: prime-dark ------------------------------------------------ */
+[data-p100-theme="prime-dark"] {
+  --color-content-primary: #FFFFFF;
+  --color-content-secondary: #8D9299;
+  --color-content-tertiary: #313234;
+  --color-on-content-on-primary: #1A1A1A;
+
+  --color-content-extended-soft-brand: #410E00;
+  --color-content-extended-soft-info: #031D4B;
+  --color-content-extended-strong-info: #559EC8;
+  --color-content-extended-soft-accent: #1C1755;
+  --color-content-extended-strong-accent: #9288C9;
+  --color-content-extended-soft-success: #02270D;
+  --color-content-extended-success: #1AA04B;
+  --color-content-extended-strong-success: #22C55E;
+  --color-content-extended-soft-warning: #3A2804;
+  --color-content-extended-warning: #C88C18;
+  --color-content-extended-strong-warning: #FFBC1F;
+  --color-content-extended-soft-error: #3B0002;
+  --color-content-extended-error: #FF5556;
+  --color-content-extended-strong-error: #FF8A8E;
+
+  --color-surface-canvas: #1A1A1A;
+  --color-surface-secondary-canvas: #1E1E1F;
+  --color-surface-container: #212223;
+  --color-surface-secondary-container: #272829;
+
+  --color-glass-clear: #00000003;
+  --color-glass-ultra-thin: #00000021;
+  --color-glass-thin: #00000057;
+  --color-glass-regular: #0000008C;
+  --color-glass-thick: #000000C7;
+
+  --color-overlay-hover: #FFFFFF0D;
+  --color-overlay-disabled: #00000057;
+  --color-overlay-shimmer: #313234;
+  --color-overlay-secondary-shimmer: #3B3C3E;
+  --color-overlay-dimming: #00000057;
+}
+
+/* -------- Theme: option-dark (deeper neutral canvas) ---------------------- */
+[data-p100-theme="option-dark"] {
+  --color-content-primary: #FFFFFF;
+  --color-content-secondary: #8D9299;
+  --color-content-tertiary: #363739;
+  --color-on-content-on-primary: #1A1A1A;
+
+  --color-content-extended-soft-brand: #410E00;
+  --color-content-extended-soft-info: #031D4B;
+  --color-content-extended-strong-info: #559EC8;
+  --color-content-extended-soft-accent: #1C1755;
+  --color-content-extended-strong-accent: #9288C9;
+  --color-content-extended-soft-success: #02270D;
+  --color-content-extended-success: #1AA04B;
+  --color-content-extended-strong-success: #22C55E;
+  --color-content-extended-soft-warning: #3A2804;
+  --color-content-extended-warning: #C88C18;
+  --color-content-extended-strong-warning: #FFBC1F;
+  --color-content-extended-soft-error: #3B0002;
+  --color-content-extended-error: #FF5556;
+  --color-content-extended-strong-error: #FF8A8E;
+
+  --color-surface-canvas: #1E1E1F;
+  --color-surface-secondary-canvas: #212223;
+  --color-surface-container: #212223;
+  --color-surface-secondary-container: #2B2C2D;
+
+  --color-glass-clear: #00000003;
+  --color-glass-ultra-thin: #00000021;
+  --color-glass-thin: #00000057;
+  --color-glass-regular: #0000008C;
+  --color-glass-thick: #000000C7;
+
+  --color-overlay-hover: #FFFFFF0D;
+  --color-overlay-disabled: #00000057;
+  --color-overlay-shimmer: #363739;
+  --color-overlay-secondary-shimmer: #414244;
+  --color-overlay-dimming: #00000057;
+}
+
+/* -------- Theme: accent-light (orange hero background) -------------------- */
+[data-p100-theme="accent-light"],
+[data-p100-theme="accent-dark"] {
+  --color-content-primary: #1A1A1A;
+  --color-content-secondary: #1A1A1A;
+  --color-content-tertiary: #1A1A1A;
+  --color-on-content-on-primary: #FFFFFF;
+
+  --color-content-extended-soft-brand: #D04000;
+  --color-content-extended-brand: #FFFFFF;
+  --color-content-extended-strong-brand: #FFD6BF;
+  --color-on-content-extended-on-brand: #1A1A1A;
+
+  --color-surface-canvas: #FF5000;
+  --color-surface-secondary-canvas: #D04000;
+  --color-surface-container: #FF5000;
+  --color-surface-secondary-container: #D04000;
+
+  --color-glass-clear: #FF500003;
+  --color-glass-ultra-thin: #FF500021;
+  --color-glass-thin: #FF500057;
+  --color-glass-regular: #FF50008C;
+  --color-glass-thick: #FF5000C7;
+
+  --color-overlay-disabled: #FF500057;
+  --color-overlay-focus: #1A1A1A;
+  --color-overlay-shimmer: #FF7B51;
+  --color-overlay-secondary-shimmer: #FF9F7F;
+}
+
+/* -------- Responsive type scale ------------------------------------------- */
+@media (min-width: 650px) and (max-width: 1199px) {
+  :root {
+    --typography-font-size-large-display: 68px;
+    --typography-font-size-medium-display: 56px;
+    --typography-font-size-small-display: 46px;
+    --typography-font-size-large-title: 36px;
+    --typography-font-size-small-title: 22px;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --typography-font-size-large-display: 72px;
+    --typography-font-size-medium-display: 60px;
+    --typography-font-size-small-display: 50px;
+    --typography-font-size-large-title: 40px;
+    --typography-font-size-medium-title: 30px;
+    --typography-font-size-small-title: 24px;
+  }
+}
+
+/* -------- Base ------------------------------------------------------------- */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: var(--color-content-primary);
+  background-color: var(--color-surface-canvas);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================================
+   TYPOGRAPHY UTILITIES
+   Two families only:
+     • "Helvetica Now Display"  — weight 900, condensed, for display/title heavy
+     • "Helvetica Now Text"     — weight 400/700, for body, titles, copy
+   Pattern: .text-{class}-{size}-{weight}[-caps|-tight]
+     class:  display | title | copy
+     size:   large | medium | small (+ xlarge for copy)
+     weight: heavy | regular
+     suffix: -caps (uppercase) | -tight (line-height 1.2 for copy)
+   ========================================================================== */
+
+/* ----- Display (900 heavy, condensed) ------------------------------------ */
+.text-display-large-heavy,
+.text-display-medium-heavy,
+.text-display-small-heavy,
+.text-display-large-heavy-caps,
+.text-display-medium-heavy-caps,
+.text-display-small-heavy-caps,
+.text-title-large-heavy,
+.text-title-medium-heavy,
+.text-title-large-heavy-caps,
+.text-title-medium-heavy-caps {
+  font-family: "Helvetica Now Display", Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: var(--typography-letter-spacing-display);
+}
+
+.text-display-large-heavy { font-size: var(--typography-font-size-large-display); }
+.text-display-large-heavy-caps { font-size: var(--typography-font-size-large-display); text-transform: uppercase; }
+.text-display-medium-heavy { font-size: var(--typography-font-size-medium-display); }
+.text-display-medium-heavy-caps { font-size: var(--typography-font-size-medium-display); text-transform: uppercase; }
+.text-display-small-heavy { font-size: var(--typography-font-size-small-display); }
+.text-display-small-heavy-caps { font-size: var(--typography-font-size-small-display); text-transform: uppercase; }
+
+.text-display-large-regular,
+.text-display-medium-regular,
+.text-display-small-regular,
+.text-display-large-regular-caps,
+.text-display-medium-regular-caps,
+.text-display-small-regular-caps {
+  font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: var(--typography-letter-spacing-display);
+}
+.text-display-large-regular { font-size: var(--typography-font-size-large-display); }
+.text-display-large-regular-caps { font-size: var(--typography-font-size-large-display); text-transform: uppercase; }
+.text-display-medium-regular { font-size: var(--typography-font-size-medium-display); }
+.text-display-medium-regular-caps { font-size: var(--typography-font-size-medium-display); text-transform: uppercase; }
+.text-display-small-regular { font-size: var(--typography-font-size-small-display); }
+.text-display-small-regular-caps { font-size: var(--typography-font-size-small-display); text-transform: uppercase; }
+
+/* ----- Title large/medium ------------------------------------------------- */
+.text-title-large-heavy { font-size: var(--typography-font-size-large-title); letter-spacing: var(--typography-letter-spacing-large-title); }
+.text-title-large-heavy-caps { font-size: var(--typography-font-size-large-title); letter-spacing: var(--typography-letter-spacing-large-title); text-transform: uppercase; }
+.text-title-medium-heavy { font-size: var(--typography-font-size-medium-title); letter-spacing: var(--typography-letter-spacing-large-title); }
+.text-title-medium-heavy-caps { font-size: var(--typography-font-size-medium-title); letter-spacing: var(--typography-letter-spacing-large-title); text-transform: uppercase; }
+
+.text-title-large-regular,
+.text-title-large-regular-caps,
+.text-title-medium-regular,
+.text-title-medium-regular-caps {
+  font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: var(--typography-letter-spacing-large-title);
+}
+.text-title-large-regular { font-size: var(--typography-font-size-large-title); }
+.text-title-large-regular-caps { font-size: var(--typography-font-size-large-title); text-transform: uppercase; }
+.text-title-medium-regular { font-size: var(--typography-font-size-medium-title); }
+.text-title-medium-regular-caps { font-size: var(--typography-font-size-medium-title); text-transform: uppercase; }
+
+/* ----- Title small (Helvetica Now Text, 700) ----------------------------- */
+.text-title-small-heavy,
+.text-title-small-heavy-caps,
+.text-title-small-regular,
+.text-title-small-regular-caps {
+  font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+  font-size: var(--typography-font-size-small-title);
+  line-height: 1.2;
+  letter-spacing: var(--typography-letter-spacing-small-title);
+}
+.text-title-small-heavy { font-weight: 700; }
+.text-title-small-heavy-caps { font-weight: 700; text-transform: uppercase; }
+.text-title-small-regular { font-weight: 400; }
+.text-title-small-regular-caps { font-weight: 400; text-transform: uppercase; }
+
+/* ----- Copy (xlarge / large / medium / small) ---------------------------- */
+[class^="text-copy-"] {
+  font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+  letter-spacing: var(--typography-letter-spacing-copy);
+  line-height: 1.5;
+}
+[class*="-heavy"] { font-weight: 700; }
+[class*="-regular"] { font-weight: 400; }
+[class*="-caps"] { text-transform: uppercase; }
+[class*="-tight"] { line-height: 1.2; }
+
+.text-copy-xlarge-heavy, .text-copy-xlarge-heavy-caps, .text-copy-xlarge-heavy-tight,
+.text-copy-xlarge-regular, .text-copy-xlarge-regular-caps, .text-copy-xlarge-regular-tight { font-size: var(--typography-font-size-x-large-copy); }
+.text-copy-large-heavy, .text-copy-large-heavy-caps, .text-copy-large-heavy-tight,
+.text-copy-large-regular, .text-copy-large-regular-caps, .text-copy-large-regular-tight { font-size: var(--typography-font-size-large-copy); }
+.text-copy-medium-heavy, .text-copy-medium-heavy-caps, .text-copy-medium-heavy-tight,
+.text-copy-medium-regular, .text-copy-medium-regular-caps, .text-copy-medium-regular-tight { font-size: var(--typography-font-size-medium-copy); }
+.text-copy-small-heavy, .text-copy-small-heavy-caps, .text-copy-small-heavy-tight,
+.text-copy-small-regular, .text-copy-small-regular-caps, .text-copy-small-regular-tight { font-size: var(--typography-font-size-small-copy); }
+
+/* ============================================================================
+   DENSITY & LAYOUT HELPERS
+   P100 leans on generous whitespace between sections (spacing-3xl+) and
+   tighter spacing inside cards (spacing-xs / spacing-md).
+   ========================================================================== */
+.p100-page-canvas { background: var(--color-surface-canvas); color: var(--color-content-primary); min-height: 100vh; }
+.p100-container { padding: var(--spacing-md); background: var(--color-surface-container); border-radius: var(--radius-lg); }
+.p100-section-gap { display: flex; flex-direction: column; gap: var(--spacing-3xl); }
+
+/* Brand orange heading accent for section labels */
+.p100-eyebrow {
+  font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+  font-size: var(--typography-font-size-medium-copy);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: var(--typography-letter-spacing-copy);
+  text-transform: uppercase;
+  color: var(--color-content-extended-brand);
+}

@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Drop-Off Zones — Unmoderated Test Plan</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  :root {
+    --doc-max: 880px;
+    --rule: #E9EBEE;
+  }
+  html, body { background: #F4F5F6; }
+  body {
+    font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+    color: #1A1A1A;
+    line-height: 1.55;
+    padding: 56px 24px 96px;
+  }
+  main {
+    max-width: var(--doc-max);
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 56px 64px 72px;
+  }
+  header.doc-head {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .doc-eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: #FF5000; margin: 0 0 14px;
+  }
+  h1.doc-title {
+    font-family: "Helvetica Now Display", Helvetica, Arial, sans-serif;
+    font-weight: 900; font-size: 44px; line-height: 1;
+    letter-spacing: 0.5px; margin: 0 0 14px; text-wrap: balance;
+  }
+  .doc-meta {
+    display: flex; flex-wrap: wrap; gap: 28px;
+    color: #656A6F; font-size: 13px; margin-top: 18px;
+  }
+  .doc-meta b { color: #1A1A1A; font-weight: 700; }
+
+  h2 {
+    font-weight: 700; font-size: 22px; letter-spacing: 0.25px;
+    margin: 44px 0 12px; line-height: 1.2;
+  }
+  h2 .num {
+    display: inline-block; min-width: 28px; color: #FF5000;
+    font-feature-settings: "tnum";
+  }
+  h3 {
+    font-size: 15px; font-weight: 700; letter-spacing: 0.3px;
+    text-transform: uppercase; color: #656A6F; margin: 26px 0 8px;
+  }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  li::marker { color: #8D9299; }
+
+  .lede { font-size: 16.5px; line-height: 1.55; color: #1A1A1A; }
+  .callout {
+    background: #FFF2E8; border-left: 3px solid #FF5000;
+    padding: 14px 18px; border-radius: 0 10px 10px 0;
+    margin: 14px 0 16px; font-size: 14px; line-height: 1.5;
+  }
+  .callout.info {
+    background: #EAFBFF; border-color: #0088FF;
+  }
+  .callout b { font-weight: 700; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 8px 0 20px; font-size: 13.5px;
+  }
+  th, td {
+    text-align: left; padding: 10px 12px;
+    border-bottom: 1px solid var(--rule); vertical-align: top;
+  }
+  th {
+    font-weight: 700; font-size: 11.5px; letter-spacing: 0.6px;
+    text-transform: uppercase; color: #656A6F;
+    background: #FAFAFB;
+  }
+  td code, p code {
+    background: #F4F5F6; padding: 1px 6px; border-radius: 4px;
+    font-size: 12.5px; font-family: "SF Mono", ui-monospace, Menlo, monospace;
+  }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: #F4F5F6; color: #1A1A1A;
+    font-size: 12.5px; font-weight: 500;
+  }
+  .pill .dot { width: 8px; height: 8px; border-radius: 999px; }
+
+  /* Screen card — represents a single step in the unmoderated tool */
+  .screen {
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    margin: 14px 0 14px;
+    overflow: hidden;
+  }
+  .screen > header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px; padding: 12px 18px;
+    background: #FAFAFB; border-bottom: 1px solid var(--rule);
+  }
+  .screen > header h4 {
+    margin: 0; font-size: 14px; font-weight: 700;
+  }
+  .screen > header .tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.6px;
+    text-transform: uppercase; color: #656A6F;
+  }
+  .screen > header .step-id {
+    color: #FF5000; font-weight: 700;
+  }
+  .screen-body { padding: 16px 18px 18px; }
+
+  .field {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--rule);
+  }
+  .field:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+  .field .label {
+    font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase;
+    color: #656A6F; font-weight: 700; margin: 0 0 6px;
+  }
+  .field .copy {
+    font-size: 14.5px; color: #1A1A1A;
+  }
+  .field .copy b { font-weight: 700; }
+  .field.shown { background: #FFFFFF; }
+  .field.shown .copy {
+    padding: 10px 12px; background: #FAFAFB;
+    border-radius: 8px;
+  }
+  .field.shown .copy::before {
+    content: "“"; color: #8D9299; margin-right: 2px;
+  }
+  .field.shown .copy::after {
+    content: "”"; color: #8D9299; margin-left: 2px;
+  }
+
+  .qa { margin: 10px 0 0; }
+  .qa li { margin-bottom: 4px; }
+
+  .response {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #1A1A1A; color: #FFFFFF;
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .response.voice { background: #FF5000; }
+  .response.scale { background: #0088FF; }
+  .response.choice { background: #22C55E; }
+  .response.rank { background: #6B5DFF; }
+  .response.colour { background: #FFBC1F; color: #1A1A1A; }
+
+  .grid-two {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; margin: 8px 0 18px;
+  }
+  .tile {
+    border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px;
+  }
+  .tile h4 {
+    margin: 0 0 6px; font-size: 13px; text-transform: uppercase;
+    letter-spacing: 0.6px; color: #656A6F; font-weight: 700;
+  }
+  .tile p { margin: 0; font-size: 14px; }
+
+  .small { font-size: 12.5px; color: #656A6F; }
+
+  hr.sec { border: none; border-top: 1px solid var(--rule); margin: 36px 0 0; }
+
+  @media print {
+    html, body { background: #fff; }
+    body { padding: 0; }
+    main { border: none; border-radius: 0; padding: 32px 32px 48px; max-width: none; }
+    .screen { page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="doc-head">
+    <p class="doc-eyebrow">SIXT Share · Research Plan</p>
+    <h1 class="doc-title">Drop-Off Zones — Unmoderated Think-Aloud Test</h1>
+    <p class="lede">A self-guided remote study to validate whether SIXT Share customers understand the new Drop-Off Zone concept, feel confident about end-of-rental pricing, and which of three visualisation concepts (Subtle, Adaptive, Prominent) they prefer. Every screen, instruction, and question shown to the participant is specified verbatim so the script can be imported directly into our unmoderated testing tool.</p>
+    <div class="doc-meta">
+      <span><b>Method</b> · Unmoderated, think-aloud (audio + screen recording)</span>
+      <span><b>Tool</b> · Online platform with stepwise screens, voice capture &amp; auto-transcript</span>
+      <span><b>Duration</b> · ~25 min</span>
+      <span><b>Participants</b> · 10–15</span>
+      <span><b>Stimulus</b> · Interactive HTML prototype linked from inside the tool</span>
+    </div>
+  </header>
+
+  <h2><span class="num">1</span> Background</h2>
+  <p>SIXT Share customers regularly end rentals in low-demand areas. Employees then reposition vehicles to profitable locations, which is a logistical and financial burden. To nudge users toward better drop-off behaviour we are introducing <b>Drop-Off Zones</b>:</p>
+  <div class="pill-row">
+    <span class="pill"><span class="dot" style="background:#22C55E"></span>Reward zone · −€1</span>
+    <span class="pill"><span class="dot" style="background:#D7DADC"></span>Standard zone · no change</span>
+    <span class="pill"><span class="dot" style="background:#FFBC1F"></span>Paid zone · +€1</span>
+    <span class="pill"><span class="dot" style="background:#D70015"></span>No-parking zone · cannot end</span>
+    <span class="pill"><span class="dot" style="background:#656A6F"></span>Outside service area · cannot end</span>
+  </div>
+  <div class="callout">
+    <b>Internal hypothesis.</b> Only the <i>end-of-rental</i> zone affects the price. The starting zone is irrelevant. We therefore suspect that surfacing zones during the entire drive could confuse rather than help users. This script must <i>not</i> reveal that hypothesis to participants — it is here for the team only.
+  </div>
+
+  <h2><span class="num">2</span> Research goals &amp; questions</h2>
+  <ol>
+    <li><b>RQ1 · Comprehension</b> — Can users correctly describe what each zone means?</li>
+    <li><b>RQ2 · Cost confidence</b> — Do users feel certain how the final price was calculated?</li>
+    <li><b>RQ3 · Concept preference</b> — Subtle vs. Adaptive vs. Prominent?</li>
+    <li><b>RQ4 · Colour mapping</b> — Are the zone colours intuitive?</li>
+    <li><b>RQ5 · Default visibility</b> — Should zones be visible on the map by default?</li>
+    <li><b>RQ6 · Toggle</b> — Do users want a switch to hide / show zones?</li>
+    <li><b>RQ7 · In-trip relevance</b> — Is the zone info useful while driving, or only at end of rental?</li>
+  </ol>
+
+  <h2><span class="num">3</span> Setup &amp; recruitment</h2>
+  <div class="grid-two">
+    <div class="tile">
+      <h4>Sample</h4>
+      <p>10–15 testers who have used SIXT Share, Miles, ShareNow/WeShare or another car-sharing service at least once in the last 12 months. Where possible, a mix of frequent and occasional renters from various densely populated cities.</p>
+    </div>
+    <div class="tile">
+      <h4>Device</h4>
+      <p>Participant's own computer (desktop or laptop). The prototype displays a phone frame on screen to simulate the mobile environment.</p>
+    </div>
+    <div class="tile">
+      <h4>Capture</h4>
+      <p>The tool records the participant's screen and microphone for the entire session and generates a written transcript for analysis.</p>
+    </div>
+    <div class="tile">
+      <h4>Counterbalancing</h4>
+      <p>The three concept screens (Subtle / Adaptive / Prominent) are presented in a randomised order per participant.</p>
+    </div>
+  </div>
+
+  <h2><span class="num">4</span> Response types used in the script</h2>
+  <div class="pill-row">
+    <span class="response voice">Voice answer</span>
+    <span class="response scale">Scale 1–5</span>
+    <span class="response choice">Single / multi choice</span>
+    <span class="response rank">Drag to rank</span>
+    <span class="response colour">Colour picker</span>
+  </div>
+  <p class="small">Every "Voice answer" prompt automatically reminds the participant to speak their thoughts out loud. The tool records both audio and screen.</p>
+
+  <hr class="sec">
+
+  <h2><span class="num">5</span> Step-by-step script</h2>
+  <p>Each card below is one screen in the unmoderated tool. The text inside the quoted block is shown verbatim to the participant. Internal notes for the research team are kept outside the quote.</p>
+
+  <h3>Block A — Welcome &amp; warm-up</h3>
+
+  <div class="screen">
+    <header><span class="step-id">S1</span><span class="tag">Welcome</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="label">Shown on screen</p>
+        <p class="copy">Welcome, and thank you for helping us improve SIXT Share. This test takes about 25 minutes. We'll show you a few screens from a new feature we're working on and ask you to <b>think out loud</b> the whole time — just say whatever comes to mind, even small reactions. There are no right or wrong answers; we're testing the design, not you.<br><br>You'll need: a computer, headphones (optional), and a quiet place. Please allow microphone and screen access when prompted.</p>
+      </div>
+      <div class="field">
+        <p class="label">Action</p>
+        <p class="copy">Button: <b>"I'm ready, let's start"</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="step-id">S2</span><span class="tag">Consent</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">We will record your voice and screen during this session and create a written transcript so our researchers can analyse the results. Recordings are stored securely and used only for product research. You can stop at any time.</p>
+      </div>
+      <div class="field">
+        <p class="label">Action <span class="response choice">Choice</span></p>
+        <p class="copy">Checkbox: <b>"I agree to be recorded and continue."</b> · Button: <b>Continue</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="step-id">S3</span><span class="tag">Warm-up</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">First, tell us a little about how you use SIXT Share.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q1 <span class="response voice">Voice</span></p>
+        <p class="copy">Think back to your last SIXT Share trip. Where did you go, and how did you decide where to park at the end? Please describe it out loud.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q2 <span class="response choice">Single choice</span></p>
+        <p class="copy">How often do you use SIXT Share?
+          <br>· Several times a week
+          <br>· A few times a month
+          <br>· Once a month or less
+          <br>· This was my first or second time</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Block B — Cold first impression (RQ1, RQ7)</h3>
+
+  <div class="screen">
+    <header><span class="step-id">S4</span><span class="tag">Open prototype</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">Imagine you have just unlocked a SIXT Share car and started driving. Tap the link below to open the screen you would see in the app. Look at it for about 30 seconds and <b>say out loud everything you notice</b> — without scrolling or tapping anything yet.</p>
+      </div>
+      <div class="field">
+        <p class="label">Action</p>
+        <p class="copy">Link → prototype, default state: <b>Adaptive concept, vehicle in a Paid zone, bottom sheet open</b>.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q3 <span class="response voice">Voice</span></p>
+        <p class="copy">What do you see on this screen? What do you think is happening?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q4 <span class="response voice">Voice</span></p>
+        <p class="copy">If you ended your rental <i>right now</i>, what do you think would happen? Would it cost extra, less, the same — or is something not allowed?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q5 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">How clear is this screen to you? (1 = very confusing, 5 = very clear)</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Block C — Concept walkthroughs (RQ3, RQ7)</h3>
+  <p class="small">The three concept blocks below are presented in <b>randomised order</b> for each participant. The same task is performed in each.</p>
+
+  <div class="screen">
+    <header><span class="step-id">S5 / S6 / S7</span><span class="tag">Concept block · repeats per concept</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">You're about to see another version of the same screen. You're driving the SIXT Share car and your vehicle is currently in a <b>paid drop-off zone</b> — parking here would add a small fee to your rental. Spend a minute exploring the screen and <b>keep talking</b> while you do. Then we'll ask a few questions.</p>
+      </div>
+      <div class="field">
+        <p class="label">Action</p>
+        <p class="copy">Link → prototype, locked to the concept variant for this block (Subtle / Adaptive / Prominent). Same Paid-zone scenario for all three.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q6 <span class="response voice">Voice</span></p>
+        <p class="copy">What does this screen tell you about where you are parked?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q7 <span class="response voice">Voice</span></p>
+        <p class="copy">If you wanted to avoid the extra fee, what would you do next?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q8 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">How <b>clear</b> is this version? (1 = very confusing, 5 = very clear)</p>
+      </div>
+      <div class="field">
+        <p class="label">Q9 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">How <b>distracting</b> would this feel while you were driving? (1 = not at all, 5 = very)</p>
+      </div>
+      <div class="field">
+        <p class="label">Q10 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">How likely would you be to <b>change where you park</b> because of this screen? (1 = not at all, 5 = very likely)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="step-id">S8</span><span class="tag">Concept comparison</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">You've now seen three different versions of the driving screen. Below are screenshots of each. Drag them into the order you'd prefer the app to behave, from most preferred at the top to least preferred at the bottom.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q11 <span class="response rank">Rank</span></p>
+        <p class="copy">Three thumbnails labelled <b>Version A</b>, <b>Version B</b>, <b>Version C</b> (mapping recorded in the tool). Drag to reorder.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q12 <span class="response voice">Voice</span></p>
+        <p class="copy">Why did you put your top choice first? What made it better than the others?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q13 <span class="response voice">Voice</span></p>
+        <p class="copy">Was there anything in the version you ranked <i>last</i> that you actually did like? Anything missing from your favourite?</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Block D — End-of-rental cost confidence (RQ2)</h3>
+
+  <div class="screen">
+    <header><span class="step-id">S9</span><span class="tag">End-of-rental, Reward zone</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">You've finished your trip and parked the car. Tap the link below to see the summary the app shows you when the rental ends. Take your time and <b>talk us through what you see</b>.</p>
+      </div>
+      <div class="field">
+        <p class="label">Action</p>
+        <p class="copy">Link → prototype end-of-rental screen, scenario: <b>Reward zone, final price includes −€1 discount</b>.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q14 <span class="response voice">Voice</span></p>
+        <p class="copy">How did the final price come together? Explain it in your own words.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q15 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">How <b>confident</b> are you that the final price is correct? (1 = not at all, 5 = very confident)</p>
+      </div>
+      <div class="field">
+        <p class="label">Q16 <span class="response voice">Voice</span></p>
+        <p class="copy">What, if anything, makes you uncertain? What would you want to see to feel more sure?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="step-id">S10</span><span class="tag">End-of-rental, Paid zone</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">Now imagine the same trip, but this time you parked somewhere else. Tap the link to see the new summary.</p>
+      </div>
+      <div class="field">
+        <p class="label">Action</p>
+        <p class="copy">Link → end-of-rental screen, scenario: <b>Paid zone, final price includes +€1 fee</b>.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q17 <span class="response voice">Voice</span></p>
+        <p class="copy">What's different on this screen? How would you feel if this were your actual rental?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q18 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">How <b>fair</b> does the extra fee feel? (1 = very unfair, 5 = very fair)</p>
+      </div>
+      <div class="field">
+        <p class="label">Q19 <span class="response voice">Voice</span></p>
+        <p class="copy">When during the trip would you have wanted to know about this fee? Before booking, during the drive, just before parking, or only at the end?</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Block E — Zone comprehension (RQ1)</h3>
+
+  <div class="screen">
+    <header><span class="step-id">S11</span><span class="tag">Concept legend</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">Below is a legend that explains the five different zones SIXT may show on the map. Read it carefully — we'll then ask a few quick questions.</p>
+      </div>
+      <div class="field">
+        <p class="label">Shown legend</p>
+        <p class="copy">
+          🟢 <b>Reward zone</b> — Park here and get €1 off the rental.<br>
+          ⚪ <b>Standard zone</b> — No change to the price.<br>
+          🟡 <b>Paid zone</b> — Park here and €1 is added to the rental.<br>
+          🔴 <b>No-parking zone</b> — You cannot end the rental here.<br>
+          ⚫ <b>Outside service area</b> — You cannot end the rental here.
+        </p>
+      </div>
+      <div class="field">
+        <p class="label">Q20 <span class="response choice">Single choice × 5</span></p>
+        <p class="copy">For each of the five zones, choose which sentence best matches it:
+          <br>· I will pay €1 less than usual.
+          <br>· I will pay €1 more than usual.
+          <br>· The price doesn't change.
+          <br>· I cannot end my rental here.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q21 <span class="response voice">Voice</span></p>
+        <p class="copy">If you started your rental in a paid zone and ended it in a standard zone, would you have to pay extra? Why or why not?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q22 <span class="response voice">Voice</span></p>
+        <p class="copy">What's the difference between a "No-parking zone" and "Outside service area" in your own words?</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Block F — Colours (RQ4)</h3>
+
+  <div class="screen">
+    <header><span class="step-id">S12</span><span class="tag">Blind colour mapping</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">Forget for a moment what you've seen so far. If <i>you</i> could pick a colour for each kind of zone, which would feel most natural? Pick one colour per zone — you can reuse a colour if you want.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q23 <span class="response colour">Picker × 5</span></p>
+        <p class="copy">For each zone (Reward · Standard · Paid · No-parking · Outside service area), pick one of: <b>Green · Yellow · Orange · Red · Blue · Purple · Grey · White</b>.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q24 <span class="response voice">Voice</span></p>
+        <p class="copy">Why those colours? Walk us through your thinking.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="step-id">S13</span><span class="tag">Compare with SIXT mapping</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">Here is the colour scheme we are currently considering: <b>Reward = green</b>, <b>Standard = grey</b>, <b>Paid = yellow</b>, <b>No-parking = red</b>, <b>Outside service area = dark grey</b>.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q25 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">How well does this match what you'd expect? (1 = doesn't match at all, 5 = matches perfectly)</p>
+      </div>
+      <div class="field">
+        <p class="label">Q26 <span class="response voice">Voice</span></p>
+        <p class="copy">If you would change any colour, which one and why?</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Block G — Default visibility &amp; toggle (RQ5, RQ6)</h3>
+
+  <div class="screen">
+    <header><span class="step-id">S14</span><span class="tag">Map default</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">Now imagine you've just opened the SIXT Share app and you're looking at the map to find a car. Below are two versions of the same map.</p>
+      </div>
+      <div class="field">
+        <p class="label">Action</p>
+        <p class="copy">Side-by-side images: <b>(A)</b> Map with all zones coloured in, <b>(B)</b> Plain map with no zones.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q27 <span class="response choice">Single choice</span></p>
+        <p class="copy">Which version would you prefer to see when you open the app?
+          <br>· A — Always show zones
+          <br>· B — Plain map, only show zones when I ask
+          <br>· Only show zones when one is nearby and matters to me
+          <br>· I don't have a preference</p>
+      </div>
+      <div class="field">
+        <p class="label">Q28 <span class="response voice">Voice</span></p>
+        <p class="copy">Why did you pick that option?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="step-id">S15</span><span class="tag">Toggle</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">Imagine there's a small switch on the map labelled "Show drop-off zones".</p>
+      </div>
+      <div class="field">
+        <p class="label">Q29 <span class="response scale">Scale 1–5</span></p>
+        <p class="copy">Do you think this would be useful to you to show/hide drop-off zones?
+          <br>1 = not useful at all · 5 = very useful</p>
+      </div>
+      <div class="field">
+        <p class="label">Q30 <span class="response voice">Voice</span></p>
+        <p class="copy">If you could only have <i>one</i> — zones visible by default, or a switch to turn them on — which would you keep, and why?</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Block H — Wrap-up</h3>
+
+  <div class="screen">
+    <header><span class="step-id">S16</span><span class="tag">Reflection</span></header>
+    <div class="screen-body">
+      <div class="field">
+        <p class="label">Q31 <span class="response voice">Voice</span></p>
+        <p class="copy">Looking back at everything you saw, when during a SIXT Share trip is this zone information most useful to you — before booking, while driving, just before parking, or only when ending the rental?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q32 <span class="response scale">Scale 0–10</span></p>
+        <p class="copy">If this feature shipped exactly as you've seen it, how much more (or less) likely would you be to recommend SIXT Share to a friend? (0 = much less likely, 10 = much more likely)</p>
+      </div>
+      <div class="field">
+        <p class="label">Q33 <span class="response voice">Voice</span></p>
+        <p class="copy">What is the <b>one</b> thing you would change about what you've seen today?</p>
+      </div>
+      <div class="field">
+        <p class="label">Q34 <span class="response choice">Single choice</span></p>
+        <p class="copy">If you could turn this feature off entirely, would you?
+          <br>· Yes
+          <br>· No
+          <br>· Only sometimes</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <header><span class="step-id">S17</span><span class="tag">Thank-you</span></header>
+    <div class="screen-body">
+      <div class="field shown">
+        <p class="copy">That's everything — thank you for your time and your honest thoughts. Your incentive will arrive within 5 working days. If you have any final comments you didn't get to say, please record them now.</p>
+      </div>
+      <div class="field">
+        <p class="label">Q35 <span class="response voice">Voice · optional</span></p>
+        <p class="copy">Any last thoughts?</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sec">
+
+  <h2><span class="num">6</span> Analysis plan</h2>
+  <table>
+    <thead><tr><th style="width:32%">Goal</th><th>Source</th><th>How we analyse</th></tr></thead>
+    <tbody>
+      <tr><td>Comprehension (RQ1)</td><td>Q20 multi-choice, Q21–Q22 transcripts</td><td>% correct per zone type; tag misconceptions.</td></tr>
+      <tr><td>Cost confidence (RQ2)</td><td>Q15, Q18 scales; Q14, Q16 transcripts</td><td>Mean confidence + qualitative reasons; flag low-confidence quotes.</td></tr>
+      <tr><td>Concept preference (RQ3)</td><td>Q11 ranking; Q8/Q9/Q10 per concept</td><td>Aggregate rank; per-concept clarity / distraction / behaviour-change scores.</td></tr>
+      <tr><td>Colour mapping (RQ4)</td><td>Q23 blind picks; Q25/Q26</td><td>Heat table of natural mappings vs. SIXT proposal.</td></tr>
+      <tr><td>Default visibility (RQ5)</td><td>Q27, Q28</td><td>Frequency table; quote bank for "contextual" option.</td></tr>
+      <tr><td>Toggle (RQ6)</td><td>Q29, Q30</td><td>Frequency table; forced trade-off result.</td></tr>
+      <tr><td>In-trip relevance (RQ7)</td><td>Q19, Q31, spontaneous mentions in Q3–Q7</td><td>Tag "when does it matter" responses; test the team hypothesis.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">7</span> Success criteria</h2>
+  <ul>
+    <li><b>Comprehension</b> ≥ 80 % correct on Q20 across all five zones.</li>
+    <li><b>Cost confidence</b> mean ≥ 4.0 on Q15 and Q18.</li>
+    <li><b>Concept preference</b> — one concept ranked #1 by ≥ 50 % of participants.</li>
+    <li><b>Colour mapping</b> — Reward = green and No-parking = red confirmed by ≥ 70 % blind agreement.</li>
+    <li><b>Default visibility</b> — a single option preferred by a clear majority on Q27.</li>
+    <li><b>In-trip relevance</b> — hypothesis confirmed if &lt; 30 % of participants name "while driving" in Q31.</li>
+  </ul>
+
+  <h2><span class="num">8</span> What this test will <i>not</i> answer</h2>
+  <ul>
+    <li>Exact pricing amounts (€1 is a placeholder).</li>
+    <li>Behaviour over time — repeated exposure, habit formation.</li>
+    <li>Map-overlay fidelity at extreme zoom levels.</li>
+    <li>Notification behaviour outside the app.</li>
+  </ul>
+
+  <h2><span class="num">9</span> Deliverables</h2>
+  <ul>
+    <li>Auto-generated transcripts per participant, tagged in the tool.</li>
+    <li>Quant summary: ranking, scales, multi-choice, colour heat-table.</li>
+    <li>Affinity map of qualitative quotes per research question.</li>
+    <li>One-page recommendation: chosen concept, colour palette, default visibility &amp; toggle decision.</li>
+  </ul>
+
+  <hr class="sec">
+  <p class="small" style="margin-top:18px">Owner · UX Research · SIXT Share &nbsp;·&nbsp; Draft v2 (unmoderated) &nbsp;·&nbsp; Linked prototype: <code>SIXT Share DropOff Zones - Prototype only.html</code></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Drop-Off Zones — Tester Prototype</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  :root { --rule:#E9EBEE; --bg:#F4F5F6; }
+  html, body { background: var(--bg); margin: 0; padding: 0; height: 100%; }
+  body {
+    font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+    color: #1A1A1A; line-height: 1.5;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  .progress { height: 4px; background: #E9EBEE; flex-shrink: 0; }
+  .progress .bar { height: 100%; background: #FF5000; transition: width .3s ease; }
+  .topbar {
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: flex-end;
+    border-bottom: 1px solid var(--rule);
+    background: #fff; flex-shrink: 0;
+  }
+  .stepcount {
+    font-size: 12px; color: #656A6F; letter-spacing: 0.4px;
+    font-feature-settings: "tnum";
+  }
+  .stepcount b { color: #1A1A1A; font-weight: 700; }
+
+  main {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 24px;
+    overflow: auto;
+  }
+  .stage-wrap {
+    width: 100%; max-width: 1100px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px;
+  }
+
+  .stage-proto {
+    background: #fff; border: 1px solid var(--rule);
+    border-radius: 22px; overflow: hidden;
+    width: 100%; max-width: 520px;
+    position: relative;
+  }
+  .stage-proto iframe {
+    display: block; width: 100%; height: 900px; border: 0; background: #f0eee9;
+  }
+
+  .rank-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    width: 100%; max-width: 1000px;
+  }
+  .rank-grid .v {
+    background: #fff; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden;
+  }
+  .rank-grid .v iframe { width: 100%; height: 540px; border: 0; background: #f0eee9; display: block; }
+  .rank-grid .v .lbl {
+    text-align: center; padding: 10px; font-weight: 700; font-size: 14px;
+    border-top: 1px solid var(--rule); background: #FAFAFB;
+  }
+
+  .ab-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    width: 100%; max-width: 900px;
+  }
+  .ab-grid .ab { background: #fff; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
+  .ab-grid .ab iframe { width: 100%; height: 560px; border: 0; display: block; background: #f0eee9; }
+  .ab-grid .ab .cap {
+    padding: 10px 14px; border-top: 1px solid var(--rule);
+    font-size: 14px; font-weight: 700; background: #FAFAFB;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ab-grid .ab .cap .pill {
+    display: inline-flex; align-items: center;
+    background: #FF5000; color: #fff;
+    padding: 2px 9px; border-radius: 999px;
+    font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase;
+  }
+
+  .visual-card {
+    background: #fff; border: 1px solid var(--rule); border-radius: 18px;
+    padding: 28px 32px; width: 100%; max-width: 640px;
+  }
+  .legend {
+    display: grid; grid-template-columns: 28px 1fr; gap: 10px 16px;
+    align-items: center; font-size: 15.5px;
+  }
+  .legend .swatch {
+    width: 28px; height: 28px; border-radius: 7px;
+    border: 1.5px solid rgba(0,0,0,0.08);
+  }
+  .legend b { font-weight: 700; }
+
+  .palette-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  .palette-grid .opt {
+    border: 1px solid var(--rule); border-radius: 12px;
+    padding: 12px; text-align: center; font-size: 13px;
+    background: #fff;
+  }
+  .palette-grid .opt .sw {
+    width: 100%; height: 44px; border-radius: 8px; margin-bottom: 8px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .toggle-mock {
+    display: flex; align-items: center; gap: 14px;
+    border: 1px solid var(--rule); border-radius: 14px;
+    padding: 16px 20px; background: #FAFAFB;
+    font-size: 16px; font-weight: 600;
+    max-width: 360px; margin: 0 auto;
+  }
+  .toggle-mock .switch {
+    width: 46px; height: 26px; background: #22C55E;
+    border-radius: 999px; position: relative;
+  }
+  .toggle-mock .switch::after {
+    content: ""; position: absolute; right: 3px; top: 3px;
+    width: 20px; height: 20px; border-radius: 50%; background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .cta-row {
+    margin-top: 8px; padding: 14px 0 6px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 18px;
+  }
+  .cta {
+    font-family: inherit; cursor: pointer;
+    background: #FF5000; color: #fff; border: none;
+    padding: 14px 32px; border-radius: 999px;
+    font-size: 15.5px; font-weight: 700; letter-spacing: 0.2px;
+    box-shadow: 0 8px 24px rgba(255,80,0,0.25);
+    transition: transform .08s, box-shadow .12s;
+  }
+  .cta:hover:not(:disabled) { box-shadow: 0 12px 28px rgba(255,80,0,0.3); }
+  .cta:active:not(:disabled) { transform: translateY(1px); }
+  .cta.secondary {
+    background: #fff; color: #1A1A1A;
+    border: 1.5px solid #D7DADC;
+    box-shadow: none;
+  }
+  .cta.secondary:hover:not(:disabled) {
+    border-color: #1A1A1A;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  }
+  .cta:disabled { opacity: 0.4; cursor: default; }
+  .cta-num {
+    font-size: 14px; color: #656A6F; letter-spacing: 0.4px;
+    font-feature-settings: "tnum";
+    min-width: 56px; text-align: center;
+  }
+  .cta-num b { color: #1A1A1A; font-weight: 700; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="bar" id="bar"></div></div>
+<header class="topbar">
+  <div class="stepcount"><b id="stepNow">1</b> / <span id="stepTotal">12</span></div>
+</header>
+
+<main id="main"></main>
+
+<script>
+const PROTO = 'SIXT Share DropOff Zones - Prototype only.html';
+
+const STEPS = [
+  { id:'S4',  slug:'first-impression',     kind:'proto', src:"?intensity=adaptive&scenario=charge&sim=0&alt=1" },
+  { id:'S5',  slug:'concept-subtle',       kind:'proto', src:"?intensity=subtle&scenario=charge&sim=1&alt=1" },
+  { id:'S6',  slug:'concept-adaptive',     kind:'proto', src:"?intensity=adaptive&scenario=charge&sim=1&alt=1" },
+  { id:'S7',  slug:'concept-prominent',    kind:'proto', src:"?intensity=prominent&scenario=charge&sim=1&alt=1" },
+  { id:'S8',  slug:'concept-comparison',   kind:'concepts' },
+  { id:'S9',  slug:'summary-reward',       kind:'proto', src:"?intensity=adaptive&scenario=reward&step=summary&sim=0" },
+  { id:'S10', slug:'summary-paid',         kind:'proto', src:"?intensity=adaptive&scenario=charge&step=summary&sim=0" },
+  { id:'S11', slug:'zone-legend',          kind:'legend' },
+  { id:'S12', slug:'colour-palette',       kind:'palette' },
+  { id:'S13', slug:'sixt-colour-mapping',  kind:'sixtMapping' },
+  { id:'S14', slug:'map-default-ab',       kind:'mapAB' },
+  { id:'S15', slug:'zones-toggle',         kind:'toggle' },
+];
+
+function stepIndexFromUrl(){
+  // Accept any of: #S4, #first-impression, #4, ?step=4, ?step=S4, ?step=first-impression
+  const hash = (location.hash || '').replace('#','').trim();
+  const qp = new URLSearchParams(location.search).get('step') || '';
+  const tokens = [hash, qp].filter(Boolean).map(t => t.toLowerCase());
+  for(const t of tokens){
+    let i = STEPS.findIndex(s => s.id.toLowerCase() === t || s.slug === t);
+    if(i >= 0) return i;
+    const n = parseInt(t, 10);
+    if(!isNaN(n) && n >= 1 && n <= STEPS.length) return n - 1;
+  }
+  return 0;
+}
+
+function el(tag, attrs={}, ...kids){
+  const e = document.createElement(tag);
+  for(const k in attrs){
+    if(k === 'class') e.className = attrs[k];
+    else if(k === 'html') e.innerHTML = attrs[k];
+    else if(k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  for(const kid of kids){ if(kid==null) continue;
+    e.append(kid.nodeType ? kid : document.createTextNode(kid));
+  }
+  return e;
+}
+
+function buildLegend(){
+  const hatchSvg = `data:image/svg+xml;utf8,${encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><g transform="rotate(45 3 3)"><line x1="0" y1="0" x2="0" y2="6" stroke="rgba(0,0,0,0.35)" stroke-width="1"/></g></svg>'
+  )}`;
+  return el('div', { class:'visual-card', html: `
+    <div class="legend">
+      <div class="swatch" style="background:rgba(34,197,94,.18); border-color:#22C55E"></div>
+      <div><b>Reward zone</b> — €1 off</div>
+      <div class="swatch" style="background:transparent; border-color:#D7DADC; border-style:dashed"></div>
+      <div><b>Standard zone</b> — no overlay</div>
+      <div class="swatch" style="background:rgba(0,136,255,.18); border-color:#0088FF"></div>
+      <div><b>Paid zone</b> — +€1</div>
+      <div class="swatch" style="background:rgba(141,146,153,.22); border-color:#5B6066"></div>
+      <div><b>No-parking zone</b></div>
+      <div class="swatch" style="background-image:url('${hatchSvg}'); background-color:rgba(0,0,0,.04); border-color:#1A1A1A; border-style:dashed"></div>
+      <div><b>Outside service area</b></div>
+    </div>
+  ` });
+}
+function buildPalette(){
+  const colours = [
+    ['Green','#22C55E'], ['Yellow','#FFBC1F'], ['Orange','#FF5000'], ['Red','#D70015'],
+    ['Blue','#0088FF'], ['Purple','#6B5DFF'], ['Grey','#8D9299'], ['White','#FFFFFF'],
+  ];
+  const swatches = colours.map(([n,h]) => `<div class="opt"><div class="sw" style="background:${h}"></div>${n}</div>`).join('');
+  return el('div', { class:'visual-card', html: `<div class="palette-grid">${swatches}</div>` });
+}
+function buildSixtMapping(){
+  const hatchSvg = `data:image/svg+xml;utf8,${encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><g transform="rotate(45 3 3)"><line x1="0" y1="0" x2="0" y2="6" stroke="rgba(0,0,0,0.35)" stroke-width="1"/></g></svg>'
+  )}`;
+  return el('div', { class:'visual-card', html: `
+    <div class="legend">
+      <div class="swatch" style="background:rgba(34,197,94,.18); border-color:#22C55E"></div>
+      <div><b>Reward zone</b> — Green</div>
+      <div class="swatch" style="background:transparent; border-color:#D7DADC; border-style:dashed"></div>
+      <div><b>Standard zone</b> — No overlay</div>
+      <div class="swatch" style="background:rgba(0,136,255,.18); border-color:#0088FF"></div>
+      <div><b>Paid zone</b> — Blue</div>
+      <div class="swatch" style="background:rgba(141,146,153,.22); border-color:#5B6066"></div>
+      <div><b>No-parking zone</b> — Grey</div>
+      <div class="swatch" style="background-image:url('${hatchSvg}'); background-color:rgba(0,0,0,.04); border-color:#1A1A1A; border-style:dashed"></div>
+      <div><b>Outside service area</b> — Hatched</div>
+    </div>
+  ` });
+}
+function buildToggle(){
+  return el('div', { class:'visual-card', html: `
+    <div class="toggle-mock">Show drop-off zones <div class="switch"></div></div>
+  ` });
+}
+function buildConcepts(){
+  return el('div', { class:'rank-grid', html: `
+    <div class="v"><iframe src="${PROTO}?intensity=subtle&scenario=charge&sim=0&alt=1" loading="lazy"></iframe><div class="lbl">Version A</div></div>
+    <div class="v"><iframe src="${PROTO}?intensity=adaptive&scenario=charge&sim=0&alt=1" loading="lazy"></iframe><div class="lbl">Version B</div></div>
+    <div class="v"><iframe src="${PROTO}?intensity=prominent&scenario=charge&sim=0&alt=1" loading="lazy"></iframe><div class="lbl">Version C</div></div>
+  ` });
+}
+function buildMapAB(){
+  return el('div', { class:'ab-grid', html: `
+    <div class="ab"><iframe src="${PROTO}?intensity=adaptive&scenario=normal&zonesVisible=1&sim=0&alt=0" loading="lazy"></iframe>
+      <div class="cap"><span class="pill">A</span>Map with zones</div></div>
+    <div class="ab"><iframe src="${PROTO}?intensity=adaptive&scenario=normal&zonesVisible=0&sim=0&alt=0" loading="lazy"></iframe>
+      <div class="cap"><span class="pill">B</span>Plain map</div></div>
+  ` });
+}
+
+function renderStep(idx){
+  const s = STEPS[idx];
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  document.getElementById('stepNow').textContent = idx + 1;
+  document.getElementById('stepTotal').textContent = STEPS.length;
+  document.getElementById('bar').style.width = (((idx+1)/STEPS.length)*100) + '%';
+
+  const wrap = el('div', { class:'stage-wrap' });
+
+  if(s.kind === 'proto'){
+    const stage = el('div', { class:'stage-proto' });
+    stage.append(el('iframe', { src: PROTO + s.src, loading: 'lazy' }));
+    wrap.append(stage);
+  } else if(s.kind === 'concepts') wrap.append(buildConcepts());
+  else if(s.kind === 'mapAB')     wrap.append(buildMapAB());
+  else if(s.kind === 'legend')    wrap.append(buildLegend());
+  else if(s.kind === 'palette')   wrap.append(buildPalette());
+  else if(s.kind === 'sixtMapping') wrap.append(buildSixtMapping());
+  else if(s.kind === 'toggle')    wrap.append(buildToggle());
+
+  const row = el('div', { class:'cta-row' });
+  const isFirst = idx === 0;
+  const isLast  = idx === STEPS.length-1;
+
+  const prev = el('button', { class:'cta secondary', onclick: () => goTo(idx-1) }, 'Previous');
+  if(isFirst) prev.disabled = true;
+
+  const num = el('div', { class:'cta-num', html: `<b>${idx+1}</b> / ${STEPS.length}` });
+
+  const next = el('button', { class:'cta', onclick: () => goTo(idx+1) }, isLast ? 'Finish' : 'Next');
+  if(isLast) next.disabled = true;
+
+  row.append(prev, num, next);
+  wrap.append(row);
+
+  main.append(wrap);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goTo(idx){
+  if(idx < 0 || idx >= STEPS.length) return;
+  location.hash = STEPS[idx].slug;
+}
+function onUrl(){
+  renderStep(stepIndexFromUrl());
+}
+window.addEventListener('hashchange', onUrl);
+window.addEventListener('popstate', onUrl);
+onUrl();
+</script>
+
+</body>
+</html>

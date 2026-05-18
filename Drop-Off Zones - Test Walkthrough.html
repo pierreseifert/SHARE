@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Drop-Off Zones — Test Walkthrough</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  :root {
+    --rule: #E9EBEE;
+    --bg: #F4F5F6;
+    --side-w: 300px;
+  }
+  html, body { background: var(--bg); margin: 0; padding: 0; }
+  body {
+    font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+    color: #1A1A1A; line-height: 1.5;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: var(--side-w) 1fr;
+  }
+
+  /* Sidebar */
+  aside {
+    position: sticky; top: 0; height: 100vh;
+    background: #FFFFFF; border-right: 1px solid var(--rule);
+    overflow-y: auto;
+    padding: 24px 16px 32px;
+    box-sizing: border-box;
+  }
+  aside h1 {
+    font-family: "Helvetica Now Display", Helvetica, Arial, sans-serif;
+    font-weight: 900; font-size: 22px; line-height: 1;
+    margin: 0 0 4px; letter-spacing: 0.4px;
+  }
+  aside .eyebrow {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: #FF5000; margin: 0 0 14px;
+  }
+  aside .meta {
+    font-size: 12px; color: #656A6F; margin: 6px 0 18px; line-height: 1.5;
+  }
+  aside .group {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; color: #8D9299;
+    padding: 14px 8px 6px;
+  }
+  aside .nav-btn {
+    display: flex; align-items: baseline; gap: 8px;
+    width: 100%; text-align: left;
+    background: transparent; border: none;
+    padding: 8px 10px; border-radius: 8px;
+    font-family: inherit; font-size: 13px; color: #1A1A1A;
+    cursor: pointer; transition: background .12s;
+  }
+  aside .nav-btn:hover { background: #F4F5F6; }
+  aside .nav-btn.active {
+    background: #1A1A1A; color: #FFFFFF;
+  }
+  aside .nav-btn .id {
+    font-weight: 700; font-feature-settings: "tnum";
+    min-width: 28px; color: #FF5000;
+  }
+  aside .nav-btn.active .id { color: #FF8A4D; }
+  aside .nav-btn .lbl { line-height: 1.3; }
+
+  /* Main */
+  main {
+    padding: 32px 40px 80px;
+    max-width: 1200px;
+  }
+  .step-head {
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--rule); padding-bottom: 16px; margin-bottom: 24px;
+  }
+  .step-id {
+    font-family: "Helvetica Now Display", Helvetica, Arial, sans-serif;
+    font-weight: 900; font-size: 38px; line-height: 1; color: #FF5000;
+    letter-spacing: 0.5px;
+  }
+  .step-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: #656A6F;
+    background: #F4F5F6; padding: 4px 10px; border-radius: 999px;
+  }
+  h2.step-title {
+    font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+    font-weight: 700; font-size: 24px; letter-spacing: 0.25px;
+    margin: 0; line-height: 1.2;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(420px, 1fr) minmax(340px, 0.9fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .layout.single { grid-template-columns: 1fr; max-width: 720px; }
+
+  .stage {
+    background: #FFFFFF; border: 1px solid var(--rule); border-radius: 18px;
+    overflow: hidden; min-height: 600px;
+    position: relative;
+  }
+  .stage iframe {
+    display: block; width: 100%; height: 920px; border: 0;
+    background: #f0eee9;
+  }
+  .stage .static-pad {
+    padding: 28px;
+  }
+  .stage .stage-label {
+    position: absolute; top: 12px; left: 14px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; color: #1A1A1A;
+    background: rgba(255,255,255,.92); padding: 4px 9px; border-radius: 999px;
+    border: 1px solid var(--rule); z-index: 2;
+  }
+
+  .panel {
+    background: #FFFFFF; border: 1px solid var(--rule); border-radius: 18px;
+    padding: 22px 24px;
+  }
+  .panel h3 {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; color: #656A6F;
+    margin: 0 0 10px;
+  }
+  .panel h3:not(:first-child) { margin-top: 22px; }
+
+  .shown {
+    background: #FAFAFB; border-radius: 10px; padding: 12px 14px;
+    font-size: 14.5px; color: #1A1A1A;
+  }
+  .shown::before { content: "“"; color: #8D9299; margin-right: 2px; }
+  .shown::after { content: "”"; color: #8D9299; margin-left: 2px; }
+
+  .q { padding: 10px 0; border-top: 1px dashed var(--rule); }
+  .q:first-of-type { border-top: none; padding-top: 4px; }
+  .q .qid {
+    font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase;
+    color: #656A6F; font-weight: 700; margin-right: 8px;
+  }
+  .q .qtext { font-size: 14px; color: #1A1A1A; }
+  .q .opts {
+    margin: 6px 0 0 12px; font-size: 13px; color: #1A1A1A;
+  }
+  .q .opts li { margin: 2px 0; }
+  .resp {
+    display: inline-block; margin-left: 0; margin-right: 6px;
+    padding: 2px 8px; border-radius: 999px;
+    background: #1A1A1A; color: #FFFFFF;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.4px; text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .resp.voice { background: #FF5000; }
+  .resp.scale { background: #0088FF; }
+  .resp.choice { background: #22C55E; }
+  .resp.rank { background: #6B5DFF; }
+  .resp.colour { background: #FFBC1F; color: #1A1A1A; }
+
+  /* Footer nav */
+  .footer-nav {
+    margin-top: 32px;
+    display: flex; justify-content: space-between; gap: 12px;
+  }
+  .footer-nav button {
+    font-family: inherit;
+    background: #1A1A1A; color: #FFFFFF; border: none;
+    padding: 11px 18px; border-radius: 999px; cursor: pointer;
+    font-size: 13.5px; font-weight: 700;
+  }
+  .footer-nav button:disabled { opacity: .35; cursor: default; }
+  .footer-nav .spacer { flex: 1; }
+
+  /* Static visuals (legend, colour mapping, map A/B, rank thumbnails) */
+  .legend {
+    display: grid; grid-template-columns: 24px 1fr; gap: 8px 14px;
+    align-items: center; font-size: 14px;
+  }
+  .legend .swatch {
+    width: 24px; height: 24px; border-radius: 6px;
+    border: 1.5px solid rgba(0,0,0,0.08);
+  }
+  .legend b { font-weight: 700; }
+
+  .swatch-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    margin-top: 8px;
+  }
+  .swatch-grid .opt {
+    border: 1px solid var(--rule); border-radius: 10px;
+    padding: 10px; text-align: center;
+    font-size: 12px;
+  }
+  .swatch-grid .opt .sw {
+    width: 100%; height: 36px; border-radius: 6px; margin-bottom: 6px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .map-ab {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .map-ab .ab-card {
+    border: 1px solid var(--rule); border-radius: 14px;
+    overflow: hidden; background: #fff;
+  }
+  .map-ab .ab-card iframe {
+    display: block; width: 100%; height: 520px; border: 0; background: #f0eee9;
+  }
+  .map-ab .ab-card .cap {
+    padding: 10px 14px; font-size: 12px; font-weight: 700;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .map-ab .ab-card .cap .tag {
+    font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase;
+    color: #FF5000;
+  }
+
+  .rank-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  }
+  .rank-row .v {
+    border: 1px solid var(--rule); border-radius: 14px;
+    background: #fff; overflow: hidden;
+  }
+  .rank-row .v iframe { width: 100%; height: 520px; display: block; border: 0; background:#f0eee9; }
+  .rank-row .v .cap {
+    padding: 8px 12px; font-size: 12px; font-weight: 700;
+    border-top: 1px solid var(--rule); text-align: center;
+  }
+  .rank-row .v .cap small {
+    display: block; color: #656A6F; font-weight: 400;
+    font-size: 11px; letter-spacing: 0.4px; text-transform: uppercase; margin-top: 2px;
+  }
+
+  .toggle-mock {
+    display: flex; align-items: center; gap: 10px;
+    border: 1px solid var(--rule); border-radius: 12px;
+    padding: 12px 16px; background: #FAFAFB;
+    font-size: 14px; max-width: 320px;
+  }
+  .toggle-mock .switch {
+    width: 38px; height: 22px; background: #22C55E;
+    border-radius: 999px; position: relative;
+  }
+  .toggle-mock .switch::after {
+    content: ""; position: absolute; right: 2px; top: 2px;
+    width: 18px; height: 18px; border-radius: 50%; background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+
+  .hint {
+    margin-top: 10px;
+    background: #FFF2E8; border-left: 3px solid #FF5000;
+    padding: 10px 14px; border-radius: 0 8px 8px 0;
+    font-size: 12.5px; color: #1A1A1A;
+  }
+  .hint b { font-weight: 700; }
+
+  .stage-empty {
+    display: flex; align-items: center; justify-content: center;
+    height: 600px; color: #8D9299; font-size: 14px;
+  }
+
+  @media (max-width: 1024px) {
+    body { grid-template-columns: 1fr; }
+    aside {
+      position: static; height: auto; border-right: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<aside>
+  <p class="eyebrow">SIXT Share · Test Walkthrough</p>
+  <h1>Drop-Off Zones</h1>
+  <p class="meta">A clickable preview of every screen, instruction and question in the unmoderated test — for review before launch.</p>
+  <nav id="nav"></nav>
+</aside>
+
+<main id="main">
+  <!-- step rendered here -->
+</main>
+
+<script>
+/* ------- Step definitions ------- */
+/* type: 'text' | 'proto' | 'visual' | 'concepts' | 'mapAB'
+   For 'proto', `src` is appended to the prototype iframe URL.
+*/
+const PROTO = 'SIXT Share DropOff Zones - Prototype only.html';
+
+const STEPS = [
+  /* Block A — Welcome */
+  { id: 'S1', group: 'Welcome', tag: 'Welcome', title: 'Introduction & think-aloud briefing',
+    type: 'text',
+    shown: "Welcome, and thank you for helping us improve SIXT Share. This test takes about 25 minutes. We'll show you a few screens from a new feature we're working on and ask you to think out loud the whole time — just say whatever comes to mind, even small reactions. There are no right or wrong answers; we're testing the design, not you. You'll need: a computer, headphones (optional), and a quiet place. Please allow microphone and screen access when prompted.",
+    qs: [{ id:'Action', text:'Button: "I\'m ready, let\'s start"' }],
+  },
+  { id: 'S2', group: 'Welcome', tag: 'Consent', title: 'Recording consent',
+    type: 'text',
+    shown: "We will record your voice and screen during this session and create a written transcript so our researchers can analyse the results. Recordings are stored securely and used only for product research. You can stop at any time.",
+    qs: [{ id:'Action', resp:'choice', text:'Checkbox: "I agree to be recorded and continue." → Continue' }],
+  },
+  { id: 'S3', group: 'Welcome', tag: 'Warm-up', title: 'How do you use car-sharing today?',
+    type: 'text',
+    shown: "First, tell us a little about how you use car-sharing.",
+    qs: [
+      { id:'Q1', resp:'voice', text:'Think back to your last car-sharing trip. Where did you go, and how did you decide where to park at the end? Please describe it out loud.' },
+      { id:'Q2', resp:'choice', text:'How often do you use car-sharing?', opts:['Several times a week','A few times a month','Once a month or less','This was my first or second time'] },
+    ],
+  },
+
+  /* Block B — Cold first impression */
+  { id: 'S4', group: 'Cold view', tag: 'Open prototype', title: 'First impression — driving screen',
+    type: 'proto',
+    src: '?intensity=adaptive&scenario=charge&sim=0&alt=1',
+    stageLabel: 'Adaptive · Paid zone',
+    shown: "Imagine you have just unlocked a car-sharing vehicle and started driving. Look at this screen for about 30 seconds and say out loud everything you notice — without scrolling or tapping anything yet.",
+    qs: [
+      { id:'Q3', resp:'voice', text:'What do you see on this screen? What do you think is happening?' },
+      { id:'Q4', resp:'voice', text:'If you ended your rental right now, what do you think would happen? Would it cost extra, less, the same — or is something not allowed?' },
+      { id:'Q5', resp:'scale', text:'How clear is this screen to you? (1 = very confusing, 5 = very clear)' },
+    ],
+  },
+
+  /* Block C — Concept walkthroughs */
+  { id: 'S5', group: 'Concepts', tag: 'Concept 1 of 3', title: 'Concept walkthrough — Subtle',
+    type: 'proto',
+    src: '?intensity=subtle&scenario=charge&sim=1&alt=1',
+    stageLabel: 'Subtle · Paid zone',
+    shown: "You're about to see a version of the driving screen. Your vehicle is currently in a paid drop-off zone — parking here would add a small fee. Spend a minute exploring the screen and keep talking. Then we'll ask a few questions.",
+    hint: 'Order is randomised per participant. Use the zone simulator below the phone to explore Reward / No-park / Outside if you wish.',
+    qs: [
+      { id:'Q6', resp:'voice', text:'What does this screen tell you about where you are parked?' },
+      { id:'Q7', resp:'voice', text:'If you wanted to avoid the extra fee, what would you do next?' },
+      { id:'Q8', resp:'scale', text:'How clear is this version? (1 = very confusing, 5 = very clear)' },
+      { id:'Q9', resp:'scale', text:'How distracting would this feel while driving? (1 = not at all, 5 = very)' },
+      { id:'Q10', resp:'scale', text:'How likely would you be to change where you park because of this screen? (1 = not at all, 5 = very likely)' },
+    ],
+  },
+  { id: 'S6', group: 'Concepts', tag: 'Concept 2 of 3', title: 'Concept walkthrough — Adaptive',
+    type: 'proto',
+    src: '?intensity=adaptive&scenario=charge&sim=1&alt=1',
+    stageLabel: 'Adaptive · Paid zone',
+    shown: "Here is another version of the same screen, same paid-zone scenario. Take a minute and keep thinking out loud.",
+    qs: [
+      { id:'Q6', resp:'voice', text:'What does this screen tell you about where you are parked?' },
+      { id:'Q7', resp:'voice', text:'If you wanted to avoid the extra fee, what would you do next?' },
+      { id:'Q8', resp:'scale', text:'How clear is this version? (1–5)' },
+      { id:'Q9', resp:'scale', text:'How distracting would this feel while driving? (1–5)' },
+      { id:'Q10', resp:'scale', text:'How likely would you be to change where you park? (1–5)' },
+    ],
+  },
+  { id: 'S7', group: 'Concepts', tag: 'Concept 3 of 3', title: 'Concept walkthrough — Prominent',
+    type: 'proto',
+    src: '?intensity=prominent&scenario=charge&sim=1&alt=1',
+    stageLabel: 'Prominent · Paid zone',
+    shown: "And one more version of the same screen.",
+    qs: [
+      { id:'Q6', resp:'voice', text:'What does this screen tell you about where you are parked?' },
+      { id:'Q7', resp:'voice', text:'If you wanted to avoid the extra fee, what would you do next?' },
+      { id:'Q8', resp:'scale', text:'How clear is this version? (1–5)' },
+      { id:'Q9', resp:'scale', text:'How distracting would this feel while driving? (1–5)' },
+      { id:'Q10', resp:'scale', text:'How likely would you be to change where you park? (1–5)' },
+    ],
+  },
+
+  /* Block C — Concept ranking */
+  { id: 'S8', group: 'Concepts', tag: 'Compare', title: 'Concept comparison & ranking',
+    type: 'concepts',
+    shown: "You've now seen three versions of the driving screen. Drag them into the order you'd prefer the app to behave, from most preferred at the top to least preferred at the bottom.",
+    qs: [
+      { id:'Q11', resp:'rank', text:'Drag thumbnails to reorder. (Tool maps A/B/C back to Subtle/Adaptive/Prominent.)' },
+      { id:'Q12', resp:'voice', text:'Why did you put your top choice first? What made it better than the others?' },
+      { id:'Q13', resp:'voice', text:'Was there anything in the version you ranked last that you actually did like? Anything missing from your favourite?' },
+    ],
+  },
+
+  /* Block D — End-of-rental cost confidence */
+  { id: 'S9', group: 'End of rental', tag: 'Reward zone', title: 'End-of-rental summary — Reward zone',
+    type: 'proto',
+    src: '?intensity=adaptive&scenario=reward&step=summary&sim=0',
+    stageLabel: 'Summary · Reward · −€1',
+    shown: "You've finished your trip and parked the car. Here is the summary the app shows when the rental ends. Take your time and talk us through what you see.",
+    qs: [
+      { id:'Q14', resp:'voice', text:'How did the final price come together? Explain it in your own words.' },
+      { id:'Q15', resp:'scale', text:'How confident are you that the final price is correct? (1 = not at all, 5 = very confident)' },
+      { id:'Q16', resp:'voice', text:'What, if anything, makes you uncertain? What would you want to see to feel more sure?' },
+    ],
+  },
+  { id: 'S10', group: 'End of rental', tag: 'Paid zone', title: 'End-of-rental summary — Paid zone',
+    type: 'proto',
+    src: '?intensity=adaptive&scenario=charge&step=summary&sim=0',
+    stageLabel: 'Summary · Paid · +€1',
+    shown: "Now imagine the same trip, but this time you parked somewhere else. Here is the new summary.",
+    qs: [
+      { id:'Q17', resp:'voice', text:'What\'s different on this screen? How would you feel if this were your actual rental?' },
+      { id:'Q18', resp:'scale', text:'How fair does the extra fee feel? (1 = very unfair, 5 = very fair)' },
+      { id:'Q19', resp:'voice', text:'When during the trip would you have wanted to know about this fee? Before booking, during the drive, just before parking, or only at the end?' },
+    ],
+  },
+
+  /* Block E — Comprehension */
+  { id: 'S11', group: 'Comprehension', tag: 'Legend', title: 'Zone legend & comprehension check',
+    type: 'visual', visual: 'legend',
+    shown: "Below is a legend that explains the five different zones SIXT may show on the map. Read it carefully — we'll then ask a few quick questions.",
+    qs: [
+      { id:'Q20', resp:'choice', text:'For each of the five zones, choose which sentence best matches it:', opts:[
+        'I will pay €1 less than usual.',
+        'I will pay €1 more than usual.',
+        'The price doesn\'t change.',
+        'I cannot end my rental here.',
+      ] },
+      { id:'Q21', resp:'voice', text:'If you started your rental in a paid zone and ended it in a standard zone, would you have to pay extra? Why or why not?' },
+      { id:'Q22', resp:'voice', text:'What\'s the difference between a "No-parking zone" and "Outside service area" in your own words?' },
+    ],
+  },
+
+  /* Block F — Colours */
+  { id: 'S12', group: 'Colours', tag: 'Blind mapping', title: 'Pick a colour for each zone',
+    type: 'visual', visual: 'palette',
+    shown: "Forget what you've seen so far. If you could pick a colour for each kind of zone, which would feel most natural? Pick one colour per zone — you can reuse a colour if you want.",
+    qs: [
+      { id:'Q23', resp:'colour', text:'For each zone, pick one of: Green · Yellow · Orange · Red · Blue · Purple · Grey · White.' },
+      { id:'Q24', resp:'voice', text:'Why those colours? Walk us through your thinking.' },
+    ],
+  },
+  { id: 'S13', group: 'Colours', tag: 'SIXT mapping', title: 'Compare with the proposed SIXT scheme',
+    type: 'visual', visual: 'sixtMapping',
+    shown: "Here is the colour scheme we are currently considering: Reward = green, Standard = no overlay, Paid = blue, No-parking = grey, Outside service area = hatched.",
+    qs: [
+      { id:'Q25', resp:'scale', text:'How well does this match what you\'d expect? (1 = doesn\'t match at all, 5 = matches perfectly)' },
+      { id:'Q26', resp:'voice', text:'If you would change any colour, which one and why?' },
+    ],
+  },
+
+  /* Block G — Visibility & toggle */
+  { id: 'S14', group: 'Visibility', tag: 'Default visibility', title: 'Map with zones vs. plain map',
+    type: 'mapAB',
+    shown: "Now imagine you've just opened the SIXT Share app and you're looking at the map to find a car. Below are two versions of the same map.",
+    qs: [
+      { id:'Q27', resp:'choice', text:'Which version would you prefer to see when you open the app?', opts:[
+        'A — Always show zones',
+        'B — Plain map, only show zones when I ask',
+        'Only show zones when one is nearby and matters to me',
+        'I don\'t have a preference',
+      ] },
+      { id:'Q28', resp:'voice', text:'Why did you pick that option?' },
+    ],
+  },
+  { id: 'S15', group: 'Visibility', tag: 'Toggle', title: 'A switch to show / hide zones',
+    type: 'visual', visual: 'toggle',
+    shown: "Imagine there's a small switch on the map labelled \"Show drop-off zones\".",
+    qs: [
+      { id:'Q29', resp:'scale', text:'Do you think this would be useful to you to show/hide drop-off zones? (1 = not useful at all, 5 = very useful)' },
+      { id:'Q30', resp:'voice', text:'If you could only have one — zones visible by default, or a switch to turn them on — which would you keep, and why?' },
+    ],
+  },
+
+  /* Block H — Wrap-up */
+  { id: 'S16', group: 'Wrap-up', tag: 'Reflection', title: 'Final reflection',
+    type: 'text',
+    shown: "A few last questions on what you've seen.",
+    qs: [
+      { id:'Q31', resp:'voice', text:'Looking back at everything you saw, when during a trip is this zone information most useful to you — before booking, while driving, just before parking, or only when ending the rental?' },
+      { id:'Q32', resp:'scale', text:'If this feature shipped exactly as you\'ve seen it, how much more (or less) likely would you be to recommend SIXT Share to a friend? (0 = much less likely, 10 = much more likely)' },
+      { id:'Q33', resp:'voice', text:'What is the one thing you would change about what you\'ve seen today?' },
+      { id:'Q34', resp:'choice', text:'If you could turn this feature off entirely, would you?', opts:['Yes','No','Only sometimes'] },
+    ],
+  },
+  { id: 'S17', group: 'Wrap-up', tag: 'Thank you', title: 'Goodbye',
+    type: 'text',
+    shown: "That's everything — thank you for your time and your honest thoughts. Your incentive will arrive within 5 working days. If you have any final comments you didn't get to say, please record them now.",
+    qs: [{ id:'Q35', resp:'voice', text:'Any last thoughts? (optional)' }],
+  },
+];
+
+/* ---------- Render ---------- */
+const respLabel = { voice:'Voice', scale:'Scale 1–5', choice:'Choice', rank:'Rank', colour:'Colour' };
+
+function el(tag, attrs={}, ...kids){
+  const e = document.createElement(tag);
+  for(const k in attrs){
+    if(k === 'class') e.className = attrs[k];
+    else if(k === 'html') e.innerHTML = attrs[k];
+    else if(k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  for(const kid of kids){ if(kid==null) continue;
+    e.append(kid.nodeType ? kid : document.createTextNode(kid));
+  }
+  return e;
+}
+
+function buildNav(){
+  const nav = document.getElementById('nav');
+  let lastGroup = null;
+  STEPS.forEach((s, idx) => {
+    if(s.group !== lastGroup){
+      nav.append(el('div', { class:'group' }, s.group));
+      lastGroup = s.group;
+    }
+    const btn = el('button', { class:'nav-btn', 'data-idx': idx, onclick: () => goTo(idx) });
+    btn.append(el('span', { class:'id' }, s.id));
+    btn.append(el('span', { class:'lbl' }, s.title));
+    nav.append(btn);
+  });
+}
+
+function buildStaticVisual(kind){
+  if(kind === 'legend'){
+    const c = el('div', { class:'static-pad' });
+    c.append(el('div', { class:'legend',
+      html: `
+        <div class="swatch" style="background:rgba(34,197,94,.18); border-color:#22C55E"></div>
+        <div><b>Reward zone</b> — Park here and get €1 off the rental.</div>
+        <div class="swatch" style="background:transparent; border-color:#D7DADC; border-style:dashed"></div>
+        <div><b>Standard zone</b> — No change to the price.</div>
+        <div class="swatch" style="background:rgba(0,136,255,.18); border-color:#0088FF"></div>
+        <div><b>Paid zone</b> — Park here and €1 is added to the rental.</div>
+        <div class="swatch" style="background:rgba(141,146,153,.22); border-color:#5B6066"></div>
+        <div><b>No-parking zone</b> — You cannot end the rental here.</div>
+        <div class="swatch" style="background:repeating-linear-gradient(45deg,rgba(0,0,0,.35) 0 1px,transparent 1px 6px); border-color:#1A1A1A; border-style:dashed"></div>
+        <div><b>Outside service area</b> — You cannot end the rental here.</div>
+      ` }));
+    return c;
+  }
+  if(kind === 'palette'){
+    const colours = [
+      ['Green','#22C55E'], ['Yellow','#FFBC1F'], ['Orange','#FF5000'], ['Red','#D70015'],
+      ['Blue','#0088FF'], ['Purple','#6B5DFF'], ['Grey','#8D9299'], ['White','#FFFFFF'],
+    ];
+    const c = el('div', { class:'static-pad' });
+    c.append(el('h3', { class:'', style:'font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#656A6F;margin:0 0 10px' }, 'Palette shown to participant'));
+    const grid = el('div', { class:'swatch-grid' });
+    colours.forEach(([n, hx]) => {
+      grid.append(el('div', { class:'opt',
+        html:`<div class="sw" style="background:${hx}"></div>${n}` }));
+    });
+    c.append(grid);
+    c.append(el('h3', { style:'margin-top:22px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#656A6F' }, 'Zones to assign a colour to'));
+    const z = el('ul', { style:'margin:6px 0 0 18px;font-size:14px;line-height:1.6' });
+    ['Reward zone','Standard zone','Paid zone','No-parking zone','Outside service area'].forEach(zn => z.append(el('li', {}, zn)));
+    c.append(z);
+    return c;
+  }
+  if(kind === 'sixtMapping'){
+    const c = el('div', { class:'static-pad' });
+    c.append(el('div', { class:'legend',
+      html: `
+        <div class="swatch" style="background:rgba(34,197,94,.18); border-color:#22C55E"></div>
+        <div><b>Reward zone</b> — Green</div>
+        <div class="swatch" style="background:transparent; border-color:#D7DADC; border-style:dashed"></div>
+        <div><b>Standard zone</b> — No overlay</div>
+        <div class="swatch" style="background:rgba(0,136,255,.18); border-color:#0088FF"></div>
+        <div><b>Paid zone</b> — Blue</div>
+        <div class="swatch" style="background:rgba(141,146,153,.22); border-color:#5B6066"></div>
+        <div><b>No-parking zone</b> — Grey</div>
+        <div class="swatch" style="background:repeating-linear-gradient(45deg,rgba(0,0,0,.35) 0 1px,transparent 1px 6px); border-color:#1A1A1A; border-style:dashed"></div>
+        <div><b>Outside service area</b> — Hatched</div>
+      ` }));
+    return c;
+  }
+  if(kind === 'toggle'){
+    const c = el('div', { class:'static-pad', style:'display:flex;flex-direction:column;gap:14px' });
+    c.append(el('div', { class:'toggle-mock', html: 'Show drop-off zones <div class="switch"></div>' }));
+    c.append(el('div', { style:'font-size:13px;color:#656A6F;max-width:420px' },
+      'Mock-up of the toggle. Participants are asked whether they would use such a control on the map.'));
+    return c;
+  }
+  return el('div', { class:'stage-empty' }, 'No visual.');
+}
+
+function buildMapAB(){
+  const c = el('div', { class:'static-pad' });
+  c.append(el('div', { class:'map-ab', html: `
+    <div class="ab-card">
+      <iframe src="${PROTO}?intensity=adaptive&scenario=normal&zonesVisible=1&sim=0&alt=0" loading="lazy"></iframe>
+      <div class="cap"><span class="tag">Version A</span>Always show zones</div>
+    </div>
+    <div class="ab-card">
+      <iframe src="${PROTO}?intensity=adaptive&scenario=normal&zonesVisible=0&sim=0&alt=0" loading="lazy"></iframe>
+      <div class="cap"><span class="tag">Version B</span>Plain map</div>
+    </div>
+  ` }));
+  return c;
+}
+
+function buildConceptsRank(){
+  const c = el('div', { class:'static-pad' });
+  c.append(el('div', { class:'rank-row', html: `
+    <div class="v">
+      <iframe src="${PROTO}?intensity=subtle&scenario=charge&sim=0&alt=1" loading="lazy"></iframe>
+      <div class="cap">Version A<small>= Subtle</small></div>
+    </div>
+    <div class="v">
+      <iframe src="${PROTO}?intensity=adaptive&scenario=charge&sim=0&alt=1" loading="lazy"></iframe>
+      <div class="cap">Version B<small>= Adaptive</small></div>
+    </div>
+    <div class="v">
+      <iframe src="${PROTO}?intensity=prominent&scenario=charge&sim=0&alt=1" loading="lazy"></iframe>
+      <div class="cap">Version C<small>= Prominent</small></div>
+    </div>
+  ` }));
+  return c;
+}
+
+function renderStep(idx){
+  const s = STEPS[idx];
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  const head = el('div', { class:'step-head' });
+  head.append(el('span', { class:'step-id' }, s.id));
+  head.append(el('h2', { class:'step-title' }, s.title));
+  head.append(el('span', { class:'step-tag' }, s.tag));
+  main.append(head);
+
+  /* Layout */
+  const isSingle = (s.type === 'text');
+  const layout = el('div', { class:'layout' + (isSingle ? ' single' : '') });
+
+  /* Stage / visual */
+  if(!isSingle){
+    const stage = el('div', { class:'stage' });
+    if(s.stageLabel) stage.append(el('div', { class:'stage-label' }, s.stageLabel));
+    if(s.type === 'proto'){
+      const iframe = el('iframe', { src: PROTO + s.src, loading: 'lazy' });
+      stage.append(iframe);
+    } else if(s.type === 'visual'){
+      stage.append(buildStaticVisual(s.visual));
+    } else if(s.type === 'mapAB'){
+      stage.append(buildMapAB());
+    } else if(s.type === 'concepts'){
+      stage.append(buildConceptsRank());
+    }
+    layout.append(stage);
+  }
+
+  /* Panel: shown copy + questions */
+  const panel = el('div', { class:'panel' });
+  panel.append(el('h3', {}, 'What the participant sees'));
+  panel.append(el('div', { class:'shown' }, s.shown));
+  if(s.hint){
+    const h = el('div', { class:'hint', html: '<b>Note for the team:</b> ' + s.hint });
+    panel.append(h);
+  }
+  panel.append(el('h3', {}, 'Prompts & questions'));
+  s.qs.forEach(q => {
+    const qel = el('div', { class:'q' });
+    const head = el('div', {});
+    head.append(el('span', { class:'qid' }, q.id));
+    if(q.resp) head.append(el('span', { class:'resp ' + q.resp }, respLabel[q.resp]));
+    head.append(el('span', { class:'qtext' }, q.text));
+    qel.append(head);
+    if(q.opts){
+      const ul = el('ul', { class:'opts' });
+      q.opts.forEach(o => ul.append(el('li', {}, o)));
+      qel.append(ul);
+    }
+    panel.append(qel);
+  });
+  layout.append(panel);
+
+  main.append(layout);
+
+  /* Footer nav */
+  const fnav = el('div', { class:'footer-nav' });
+  const prev = el('button', { onclick: () => goTo(idx-1) }, '← Previous');
+  prev.disabled = idx === 0;
+  const next = el('button', { onclick: () => goTo(idx+1) }, idx === STEPS.length-1 ? 'Done' : 'Next →');
+  next.disabled = idx === STEPS.length-1;
+  fnav.append(prev);
+  fnav.append(el('div', { class:'spacer' }));
+  fnav.append(next);
+  main.append(fnav);
+
+  /* nav active state */
+  document.querySelectorAll('.nav-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goTo(idx){
+  if(idx < 0 || idx >= STEPS.length) return;
+  location.hash = STEPS[idx].id;
+}
+
+function onHash(){
+  const h = location.hash.replace('#','');
+  let idx = STEPS.findIndex(s => s.id === h);
+  if(idx < 0) idx = 0;
+  renderStep(idx);
+}
+
+buildNav();
+window.addEventListener('hashchange', onHash);
+onHash();
+</script>
+
+</body>
+</html>

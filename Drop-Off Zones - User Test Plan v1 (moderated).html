@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Drop-Off Zones — Think-Aloud User Test Plan</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  :root {
+    --doc-max: 820px;
+    --rule: #E9EBEE;
+  }
+  html, body { background: #F4F5F6; }
+  body {
+    font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+    color: #1A1A1A;
+    line-height: 1.55;
+    padding: 56px 24px 96px;
+  }
+  main {
+    max-width: var(--doc-max);
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 56px 64px 72px;
+  }
+  header.doc-head {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .doc-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #FF5000;
+    margin: 0 0 14px;
+  }
+  h1.doc-title {
+    font-family: "Helvetica Now Display", Helvetica, Arial, sans-serif;
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    color: #656A6F;
+    font-size: 13px;
+    margin-top: 18px;
+  }
+  .doc-meta b { color: #1A1A1A; font-weight: 700; }
+
+  h2 {
+    font-family: "Helvetica Now Text", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.25px;
+    margin: 44px 0 12px;
+    line-height: 1.2;
+  }
+  h2 .num {
+    display: inline-block;
+    min-width: 28px;
+    color: #FF5000;
+    font-feature-settings: "tnum";
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #656A6F;
+    margin: 26px 0 8px;
+  }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  li::marker { color: #8D9299; }
+
+  .lede {
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: #1A1A1A;
+  }
+  .callout {
+    background: #FFF2E8;
+    border-left: 3px solid #FF5000;
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    margin: 14px 0 16px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .callout b { font-weight: 700; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 20px;
+    font-size: 13.5px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #656A6F;
+    background: #FAFAFB;
+    border-bottom: 1px solid var(--rule);
+  }
+  td code, p code {
+    background: #F4F5F6;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+  }
+
+  .grid-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 8px 0 18px;
+  }
+  .tile {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .tile h4 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #656A6F;
+    font-weight: 700;
+  }
+  .tile p { margin: 0; font-size: 14px; }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: #F4F5F6; color: #1A1A1A;
+    font-size: 12.5px; font-weight: 500;
+  }
+  .pill .dot { width: 8px; height: 8px; border-radius: 999px; }
+
+  .rq {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .rq:last-child { border-bottom: none; }
+  .rq .id {
+    font-weight: 700;
+    color: #FF5000;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    padding-top: 2px;
+  }
+  .rq .body b { font-weight: 700; }
+  .rq .body .sub {
+    color: #656A6F;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .task {
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .task header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px; margin-bottom: 8px;
+  }
+  .task header h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .task .duration {
+    font-size: 12px; color: #656A6F;
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .task .scenario {
+    color: #1A1A1A; font-size: 14px; margin: 0 0 10px;
+  }
+  .task .ask {
+    font-size: 13.5px;
+    background: #FAFAFB;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #1A1A1A;
+  }
+  .task .ask b { font-weight: 700; }
+  .task .probes { font-size: 13px; color: #656A6F; margin-top: 10px; }
+  .task .probes b { color: #1A1A1A; }
+
+  .small { font-size: 12.5px; color: #656A6F; }
+
+  hr.sec {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 36px 0 0;
+  }
+
+  @media print {
+    html, body { background: #fff; }
+    body { padding: 0; }
+    main { border: none; border-radius: 0; padding: 32px 32px 48px; max-width: none; }
+    h2 { page-break-after: avoid; }
+    .task, .rq { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="doc-head">
+    <p class="doc-eyebrow">SIXT Share · Research Plan</p>
+    <h1 class="doc-title">Drop-Off Zones — Think-Aloud User Test</h1>
+    <p class="lede">A moderated, think-aloud usability study to validate whether customers understand the new Drop-Off Zone concept, feel confident about end-of-rental pricing, and to choose between three visualisation concepts (Subtle, Adaptive, Prominent).</p>
+    <div class="doc-meta">
+      <span><b>Method</b> · Moderated think-aloud, 1:1</span>
+      <span><b>Duration</b> · 45 min</span>
+      <span><b>Participants</b> · 6–8</span>
+      <span><b>Format</b> · Interactive HTML prototype on phone</span>
+    </div>
+  </header>
+
+  <h2><span class="num">1</span> Background &amp; rationale</h2>
+  <p>SIXT Share customers regularly end rentals in low-demand areas, forcing employees to reposition vehicles to profitable locations. To nudge users toward better drop-off behaviour we are introducing <b>Drop-Off Zones</b>:</p>
+  <div class="pill-row">
+    <span class="pill"><span class="dot" style="background:#22C55E"></span>Reward zone · −€1</span>
+    <span class="pill"><span class="dot" style="background:#D7DADC"></span>Standard zone · no change</span>
+    <span class="pill"><span class="dot" style="background:#FFBC1F"></span>Paid zone · +€1</span>
+    <span class="pill"><span class="dot" style="background:#D70015"></span>No-parking zone · cannot end</span>
+    <span class="pill"><span class="dot" style="background:#656A6F"></span>Outside service area · cannot end</span>
+  </div>
+  <div class="callout">
+    <b>Important hypothesis to test.</b> Only the <i>end-of-rental</i> zone affects the price. The starting zone is irrelevant. We therefore suspect that surfacing zones during the entire drive could confuse rather than help users. This study should produce evidence for or against that hypothesis.
+  </div>
+
+  <h2><span class="num">2</span> Research goals</h2>
+  <ol>
+    <li>Find out whether users <b>understand the zone concept</b> (types, meaning, where it applies).</li>
+    <li>Measure their <b>confidence in the final price</b> after a rental ends in a paid or reward zone.</li>
+    <li>Choose a preferred visualisation concept among <b>Subtle</b>, <b>Adaptive</b>, and <b>Prominent</b>.</li>
+    <li>Validate <b>colour assignment</b> per zone type (green / yellow / red / grey).</li>
+    <li>Decide if zones should be <b>visible by default</b> on the map and whether a <b>toggle</b> is needed.</li>
+    <li>Sense-check the hypothesis that <b>in-trip zone display has little value</b>.</li>
+  </ol>
+
+  <h2><span class="num">3</span> Research questions</h2>
+
+  <div class="rq">
+    <div class="id">RQ1</div>
+    <div class="body">
+      <b>Comprehension.</b> Can users correctly describe what each zone type means and what happens when they end the rental in it?
+      <div class="sub">Probe: Standard, Paid, Reward, No-Parking, Outside Service Area.</div>
+    </div>
+  </div>
+  <div class="rq">
+    <div class="id">RQ2</div>
+    <div class="body">
+      <b>Cost confidence.</b> After the end-of-rental screen, do users feel certain the fee/discount is correct, and can they explain how it was calculated?
+    </div>
+  </div>
+  <div class="rq">
+    <div class="id">RQ3</div>
+    <div class="body">
+      <b>Concept preference.</b> Which of Subtle, Adaptive or Prominent feels most helpful, least intrusive, and most trustworthy — and why?
+    </div>
+  </div>
+  <div class="rq">
+    <div class="id">RQ4</div>
+    <div class="body">
+      <b>Colour mapping.</b> Are the colours intuitive? Do they correctly suggest <i>good</i>, <i>neutral</i>, <i>cost</i>, and <i>forbidden</i>?
+    </div>
+  </div>
+  <div class="rq">
+    <div class="id">RQ5</div>
+    <div class="body">
+      <b>Default visibility.</b> Should the zone overlay be on by default, off by default, or contextual (only when relevant)?
+    </div>
+  </div>
+  <div class="rq">
+    <div class="id">RQ6</div>
+    <div class="body">
+      <b>Toggle control.</b> Do users want explicit control to show / hide zones on the map?
+    </div>
+  </div>
+  <div class="rq">
+    <div class="id">RQ7</div>
+    <div class="body">
+      <b>Driving-screen relevance.</b> Do users find zone information useful <i>while driving</i>, or only when ending the rental?
+    </div>
+  </div>
+
+  <h2><span class="num">4</span> Method &amp; setup</h2>
+  <div class="grid-two">
+    <div class="tile">
+      <h4>Format</h4>
+      <p>Moderated, remote (Zoom) or in-person. Think-aloud protocol. Screen + face shared.</p>
+    </div>
+    <div class="tile">
+      <h4>Stimulus</h4>
+      <p>Interactive HTML prototype shown on the participant's own phone (mirrored for the moderator).</p>
+    </div>
+    <div class="tile">
+      <h4>Counterbalancing</h4>
+      <p>Order of the three concepts (Subtle / Adaptive / Prominent) rotated using a Latin square to control bias.</p>
+    </div>
+    <div class="tile">
+      <h4>Recording</h4>
+      <p>Screen, audio, and webcam (with consent). Observer takes structured notes.</p>
+    </div>
+  </div>
+
+  <h3>Participants (n = 6–8)</h3>
+  <ul>
+    <li>Active SIXT Share customers (≥ 1 rental in last 3 months).</li>
+    <li>Mix of city centres with high zone density (e.g. Munich, Berlin, Hamburg).</li>
+    <li>Mix of frequent (≥ 4 trips / month) and occasional users.</li>
+    <li>Age and gender balanced; include at least 2 participants who have never noticed an in-app banner before (low-attention baseline).</li>
+  </ul>
+
+  <h3>Materials checklist</h3>
+  <ul>
+    <li>Prototype URL (current build, all three tweak states pre-configured).</li>
+    <li>Moderator script &amp; observation grid.</li>
+    <li>Concept-card images for the post-task ranking exercise.</li>
+    <li>Colour-swatch sheet for the open colour-mapping exercise.</li>
+    <li>Consent form, incentive voucher.</li>
+  </ul>
+
+  <h2><span class="num">5</span> Session structure (45 min)</h2>
+  <table>
+    <thead>
+      <tr><th style="width:60px">Time</th><th>Phase</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0–5</td><td>Welcome, consent, warm-up</td><td>Build rapport, explain think-aloud, capture last-rental story.</td></tr>
+      <tr><td>5–10</td><td>First impression (cold)</td><td>Show driving screen <b>without explanation</b>. Capture spontaneous understanding.</td></tr>
+      <tr><td>10–25</td><td>Task block (3 tasks)</td><td>End rentals in Reward, Paid, and No-Parking zones.</td></tr>
+      <tr><td>25–35</td><td>Concept comparison</td><td>Cycle through Subtle / Adaptive / Prominent. Force-rank.</td></tr>
+      <tr><td>35–42</td><td>Colour &amp; visibility</td><td>Colour mapping exercise + default visibility + toggle.</td></tr>
+      <tr><td>42–45</td><td>Wrap-up</td><td>Final reflection, NPS-style preference question.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">6</span> Tasks</h2>
+
+  <div class="task">
+    <header><h4>Task 0 — Cold first impression</h4><span class="duration">≈ 4 min</span></header>
+    <p class="scenario">Participant opens the driving screen mid-rental. The current zone is a <b>Paid zone</b>. No explanation has been given.</p>
+    <div class="ask"><b>Ask:</b> "Tell me everything you see on this screen. What do you think is happening? What would happen if you ended the rental right now?"</div>
+    <div class="probes"><b>Probes:</b> Did they notice the zone indicator? What did they assume the colour meant? Did they look for a price?</div>
+  </div>
+
+  <div class="task">
+    <header><h4>Task 1 — End rental in a Reward zone</h4><span class="duration">≈ 4 min</span></header>
+    <p class="scenario">"You've finished your errand. You'd like to end the rental here." Vehicle is currently inside a Reward zone.</p>
+    <div class="ask"><b>Ask:</b> "Walk me through how you would end the rental. Once you're at the summary, tell me how the final price came together."</div>
+    <div class="probes"><b>Probes:</b> Do they spot the −€1? Do they understand <i>why</i> they got it? Would they have parked here on purpose?</div>
+  </div>
+
+  <div class="task">
+    <header><h4>Task 2 — End rental in a Paid zone (with alternative offered)</h4><span class="duration">≈ 5 min</span></header>
+    <p class="scenario">Vehicle is in a Paid zone. A nearby free / reward zone is shown as an alternative.</p>
+    <div class="ask"><b>Ask:</b> "End the rental here, or somewhere else — your choice. Talk me through your decision."</div>
+    <div class="probes"><b>Probes:</b> Trust in the +€1 fee? Effort vs. reward of moving? Clarity of the alternative banner?</div>
+  </div>
+
+  <div class="task">
+    <header><h4>Task 3 — Attempting to park in a No-Parking zone</h4><span class="duration">≈ 3 min</span></header>
+    <p class="scenario">Vehicle is in a No-Parking zone inside the service area.</p>
+    <div class="ask"><b>Ask:</b> "Try to end the rental here."</div>
+    <div class="probes"><b>Probes:</b> Do they understand <i>why</i> they can't end it? Is the message distinct enough from "outside service area"?</div>
+  </div>
+
+  <h2><span class="num">7</span> Concept comparison block</h2>
+  <p>Show each concept on the same Paid-zone scenario. Counterbalance order.</p>
+  <div class="grid-two">
+    <div class="tile">
+      <h4>Subtle</h4>
+      <p>Zones overlaid on map only; no banner on driving screen. Cost surfaces at end of rental.</p>
+    </div>
+    <div class="tile">
+      <h4>Adaptive</h4>
+      <p>Map overlay + contextual banner that appears only when in a paid / reward / no-park zone.</p>
+    </div>
+    <div class="tile">
+      <h4>Prominent</h4>
+      <p>Persistent zone callout above the bottom sheet, plus map overlay, plus alternative-zone CTA.</p>
+    </div>
+  </div>
+  <h3>Questions for each concept</h3>
+  <ul>
+    <li>"What does this version tell you that the others don't?"</li>
+    <li>"How distracting / intrusive does it feel while driving?" (1–5)</li>
+    <li>"How confident are you about the final price?" (1–5)</li>
+    <li>"How likely would you be to change where you park because of this?" (1–5)</li>
+  </ul>
+  <p class="small">Close the block with a forced ranking: <i>"Drag these three into the order you'd want the app to behave."</i></p>
+
+  <h2><span class="num">8</span> Colour mapping exercise</h2>
+  <p>Show five blank zone shapes and a palette of 8 swatches (green, yellow, red, grey, blue, purple, orange, white). Ask participants to assign one colour to each zone type <b>before</b> seeing the current design. Then reveal the current mapping and discuss agreement / disagreement.</p>
+  <div class="callout">
+    <b>Why blind first?</b> Mapping colours <i>after</i> seeing ours biases them. Capturing their unprimed choice tells us how natural our palette is.
+  </div>
+
+  <h2><span class="num">9</span> Default visibility &amp; toggle</h2>
+  <ol>
+    <li>Show the map with zones visible. Ask: <i>"Would you want to see this every time you open the app, only when relevant, or never unless you ask?"</i></li>
+    <li>Show the map with zones hidden + a "Show zones" toggle. Ask: <i>"Would you use this toggle? When?"</i></li>
+    <li>Force a trade-off: <i>"If you could only have one — zones-on-by-default or a toggle — which would you keep?"</i></li>
+  </ol>
+
+  <h2><span class="num">10</span> Wrap-up</h2>
+  <ul>
+    <li>"On a scale of 0–10, how likely are you to recommend SIXT Share <i>more</i> if this feature shipped?" (delta question)</li>
+    <li>"What's the one thing you'd change?"</li>
+    <li>"If you could turn this feature off entirely, would you?"</li>
+  </ul>
+
+  <h2><span class="num">11</span> Measures &amp; success criteria</h2>
+  <table>
+    <thead><tr><th style="width:32%">Goal</th><th style="width:34%">Measure</th><th>Success threshold</th></tr></thead>
+    <tbody>
+      <tr><td>Comprehension (RQ1)</td><td>% of zones correctly described unprompted after Task 0</td><td>≥ 4 of 5 zone types correct for ≥ 5 of 8 participants</td></tr>
+      <tr><td>Cost confidence (RQ2)</td><td>Self-rated confidence (1–5) at end-of-rental summary</td><td>Mean ≥ 4.0 with no "1" ratings</td></tr>
+      <tr><td>Concept choice (RQ3)</td><td>Forced ranking + qualitative reasoning</td><td>Clear top-2 winner with consistent rationale</td></tr>
+      <tr><td>Colour mapping (RQ4)</td><td>Blind assignment match rate</td><td>≥ 70% match per zone, or strong qualitative consensus on alternative</td></tr>
+      <tr><td>Default visibility (RQ5/6)</td><td>Single-choice forced trade-off</td><td>One option preferred by ≥ 5 of 8</td></tr>
+      <tr><td>In-trip relevance (RQ7)</td><td>Spontaneous mention of zone info during Tasks 1–2</td><td>Hypothesis confirmed if ≤ 2 of 8 reference in-trip info as decisive</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">12</span> What we will <i>not</i> test</h2>
+  <ul>
+    <li>Exact pricing amounts (€1 placeholder is sufficient).</li>
+    <li>Push-notification behaviour outside the app.</li>
+    <li>End-to-end booking flow before the rental starts.</li>
+    <li>The map overlay's visual fidelity at extreme zoom levels.</li>
+  </ul>
+
+  <h2><span class="num">13</span> Risks &amp; mitigations</h2>
+  <table>
+    <thead><tr><th style="width:38%">Risk</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Participants over-rationalise the concept once primed.</td><td>Capture cold first impression (Task 0) before any explanation.</td></tr>
+      <tr><td>Order bias across the three concepts.</td><td>Latin-square counterbalancing.</td></tr>
+      <tr><td>Halo effect — they say they "like" Prominent because it's loudest.</td><td>Pair preference with confidence + intrusiveness ratings; force a ranking.</td></tr>
+      <tr><td>Lab vs. real driving context.</td><td>Frame each task with a concrete real-life scenario; ask about last actual trip.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">14</span> Deliverables</h2>
+  <ul>
+    <li>Raw session recordings + transcripts.</li>
+    <li>Affinity-map of comprehension errors and price-confidence quotes.</li>
+    <li>Concept-ranking summary + colour-mapping heat table.</li>
+    <li>Single-page recommendation: chosen concept, colour palette, default visibility &amp; toggle decision.</li>
+    <li>Backlog of secondary findings to feed into the next iteration.</li>
+  </ul>
+
+  <hr class="sec">
+  <p class="small" style="margin-top:18px">Owner · UX Research · SIXT Share &nbsp;·&nbsp; Draft v1 &nbsp;·&nbsp; Linked prototype: <code>SIXT Share DropOff Zones - Prototype only.html</code></p>
+</main>
+</body>
+</html>
