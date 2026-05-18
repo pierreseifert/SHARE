@@ -23,10 +23,11 @@
     background: #fff; flex-shrink: 0;
   }
   .stepcount {
-    font-size: 12px; color: #656A6F; letter-spacing: 0.4px;
+    font-size: 11px; color: #B0B5BB; letter-spacing: 0.5px;
     font-feature-settings: "tnum";
+    text-transform: lowercase;
   }
-  .stepcount b { color: #1A1A1A; font-weight: 700; }
+  .stepcount b { color: #8D9299; font-weight: 400; }
 
   main {
     flex: 1;
@@ -126,36 +127,27 @@
   }
 
   .cta-row {
-    margin-top: 8px; padding: 14px 0 6px;
-    display: flex; align-items: center; justify-content: center;
+    margin-top: 8px; padding: 18px 0 10px;
+    display: flex; align-items: baseline; justify-content: center;
     gap: 18px;
   }
   .cta {
     font-family: inherit; cursor: pointer;
-    background: #FF5000; color: #fff; border: none;
-    padding: 14px 32px; border-radius: 999px;
-    font-size: 15.5px; font-weight: 700; letter-spacing: 0.2px;
-    box-shadow: 0 8px 24px rgba(255,80,0,0.25);
-    transition: transform .08s, box-shadow .12s;
+    background: transparent; color: #8D9299; border: none;
+    padding: 4px 2px;
+    font-size: 12px; font-weight: 400; letter-spacing: 0.3px;
+    text-transform: lowercase;
+    transition: color .12s;
   }
-  .cta:hover:not(:disabled) { box-shadow: 0 12px 28px rgba(255,80,0,0.3); }
-  .cta:active:not(:disabled) { transform: translateY(1px); }
-  .cta.secondary {
-    background: #fff; color: #1A1A1A;
-    border: 1.5px solid #D7DADC;
-    box-shadow: none;
-  }
-  .cta.secondary:hover:not(:disabled) {
-    border-color: #1A1A1A;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-  }
-  .cta:disabled { opacity: 0.4; cursor: default; }
+  .cta:hover:not(:disabled) { color: #1A1A1A; text-decoration: underline; text-underline-offset: 3px; }
+  .cta:disabled { opacity: 0; pointer-events: none; }
   .cta-num {
-    font-size: 14px; color: #656A6F; letter-spacing: 0.4px;
+    font-size: 11px; color: #B0B5BB; letter-spacing: 0.5px;
     font-feature-settings: "tnum";
     min-width: 56px; text-align: center;
+    text-transform: lowercase;
   }
-  .cta-num b { color: #1A1A1A; font-weight: 700; font-size: 16px; }
+  .cta-num b { color: #8D9299; font-weight: 400; font-size: 11px; }
 </style>
 </head>
 <body>
