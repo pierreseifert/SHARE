@@ -173,8 +173,8 @@ function App() {
 
   return (
     <div style={{
-      width:'100vw', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center',
-      background:'#f0eee9', padding:24, boxSizing:'border-box',
+      width:'100vw', height:'100vh', display:'flex', alignItems:'center', justifyContent:'center',
+      background:'#f0eee9', padding:24, boxSizing:'border-box', overflow:'hidden',
     }}>
       <div style={{
         width: STAGE_W, height: STAGE_H,
